@@ -60,16 +60,15 @@
         overflow: hidden;
       }
       .hero-logo {
-        height: 120px;
+        height: 46px;
         object-fit: contain;
         margin-bottom: 14px;
         cursor: pointer;
         position: relative;
         z-index: 1;
-        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
       }
       .hero-trophy {
-        font-size: 70px;
+        font-size: 44px;
         margin-bottom: 6px;
         display: block;
         animation: float 3s ease-in-out infinite;
@@ -663,6 +662,80 @@
           padding: 12px;
         }
       }
+
+      /* POPUP */
+      .popup-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .popup-overlay.active {
+        display: flex;
+      }
+      .popup-box {
+        background: #fff;
+        border-radius: 20px 20px 0 0;
+        padding: 24px 20px 32px;
+        width: 100%;
+        max-width: 500px;
+        animation: slideUp 0.3s ease;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+      .popup-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 6px;
+        text-align: center;
+      }
+      .popup-sub {
+        font-size: 13px;
+        color: var(--text3);
+        text-align: center;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+      .popup-match-list {
+        margin-bottom: 20px;
+        max-height: 40vh;
+        overflow-y: auto;
+      }
+      .popup-match-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        background: var(--bg3);
+        border-radius: 10px;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+      .popup-match-teams {
+        font-weight: 700;
+        color: var(--text);
+      }
+      .popup-match-pick {
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 12px;
+      }
+      .popup-match-nopick {
+        color: var(--text3);
+        font-size: 12px;
+        font-style: italic;
+      }
+      .popup-btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
     </style>
   </head>
   <body>
@@ -726,6 +799,13 @@
         id="tab-leaderboard"
       >
         🏅 جدول
+      </button>
+      <button
+        class="tab-btn"
+        onclick="showTab('history')"
+        id="tab-history"
+      >
+        📊 نتایج من
       </button>
     </div>
 
@@ -825,6 +905,14 @@
         <div id="lb-list"></div>
       </div>
 
+      <!-- HISTORY -->
+      <div id="sec-history" class="section">
+        <div id="history-loading" class="loading">
+          <div class="spinner"></div>در حال بارگذاری...
+        </div>
+        <div id="history-list"></div>
+      </div>
+
       <!-- ADMIN (hidden tab, accessible via logo) -->
       <div id="sec-admin" class="section">
         <div class="card" id="admin-login-card">
@@ -921,6 +1009,19 @@
       </div>
     </div>
 
+    <!-- POPUP -->
+    <div class="popup-overlay" id="predictions-popup" onclick="closePopupOnOverlay(event)">
+      <div class="popup-box">
+        <div class="popup-title">✅ پیش‌بینی‌های امروز</div>
+        <div class="popup-sub" id="popup-sub">پیش‌بینی‌های شما برای بازی‌های امروز ثبت شد</div>
+        <div class="popup-match-list" id="popup-match-list"></div>
+        <div class="popup-btns">
+          <button class="btn btn-secondary" onclick="closePopup()">✕ بستن</button>
+          <button class="btn btn-primary" onclick="closePopup()">✏️ ویرایش پیش‌بینی</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       // =============================================
       //  تنظیمات
@@ -948,10 +1049,6 @@
       let adminLoggedIn = false;
       let logoClickCount = 0;
       let logoClickTimer = null;
-      let matchesCache = null;
-      let matchesCacheTime = 0;
-      let lbCache = null;
-      let lbCacheTime = 0;
 
       // =============================================
       //  SUPABASE HELPERS
@@ -964,9 +1061,7 @@
           apikey: SB_KEY,
           Authorization: "Bearer " + SB_KEY,
         };
-        if (method === "POST")
-          headers["Prefer"] =
-            "return=representation,resolution=merge-duplicates";
+        if (method === "POST") headers["Prefer"] = "return=representation";
         if (method === "PATCH") headers["Prefer"] = "return=representation";
 
         const opts = { method, headers };
@@ -1131,6 +1226,7 @@
         showSec(t);
         if (t === "matches") loadMatches();
         if (t === "leaderboard") loadLB();
+        if (t === "history") loadHistory();
         if (t === "admin" && adminLoggedIn) {
           loadAdminMatches();
           loadAdminUsers();
@@ -1142,13 +1238,6 @@
       // =============================================
       async function loadMatches() {
         if (!currentUser) return;
-        // cache برای ۶۰ ثانیه
-        if (matchesCache && Date.now() - matchesCacheTime < 60000) {
-          allMatches = matchesCache;
-          myPredictions = matchesCache._preds || {};
-          renderMatches();
-          return;
-        }
         document.getElementById("matches-loading").style.display = "block";
         document.getElementById("matches-list").innerHTML = "";
         try {
@@ -1163,10 +1252,6 @@
           (rawPreds || []).forEach((p) => {
             myPredictions[p.match_id] = p.pick;
           });
-          // ذخیره در cache
-          matchesCache = allMatches;
-          matchesCache._preds = myPredictions;
-          matchesCacheTime = Date.now();
           renderMatches();
         } catch (e) {
           document.getElementById("matches-list").innerHTML =
@@ -1177,14 +1262,16 @@
 
       function renderMatches() {
         const el = document.getElementById("matches-list");
-        if (!allMatches.length) {
-          el.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">هنوز بازی‌ای اضافه نشده<br><span style="opacity:.6;font-size:12px">ادمین بازی‌های امشب را به زودی اضافه می‌کند</span></div></div>`;
+        // فقط بازی‌های فعال (بدون نتیجه)
+        const active = allMatches.filter(m => !m.result);
+        if (!active.length) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">بازی فعالی برای پیش‌بینی وجود ندارد<br><span style="opacity:.6;font-size:12px">نتایج را در تب «نتایج من» ببینید</span></div></div>`;
           return;
         }
         const now = Date.now();
         // گروه‌بندی بر اساس تاریخ
         const byDate = {};
-        allMatches.forEach((m) => {
+        active.forEach((m) => {
           const d = new Date(m.kickoff).toLocaleDateString("fa-IR", {
             weekday: "long",
             day: "numeric",
@@ -1271,14 +1358,12 @@
           return alert("⏰ زمان پیش‌بینی تمام شده");
         try {
           // upsert: اگه قبلاً ثبت کرده update میشه، وگرنه insert
-          await sbFetch(
-            "POST",
-            "predictions",
-            [{ phone: currentUser.phone, match_id: matchId, pick }],
-            "?on_conflict=phone,match_id",
-          );
+          await sbUpsert("predictions", {
+            phone: currentUser.phone,
+            match_id: matchId,
+            pick,
+          });
           myPredictions[matchId] = pick;
-          matchesCache = null; // cache رو پاک کن
           renderMatches();
         } catch (e) {
           alert("خطا در ثبت: " + e.message);
@@ -1405,7 +1490,10 @@
           return showMsg(msg, "همه فیلدها را پر کنید", "error");
 
         // تبدیل ساعت تهران (UTC+3:30) به timestamp
-        const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
+        const localMs = new Date(`${date}T${time}:00`).getTime();
+        const browserOffsetMs = new Date().getTimezoneOffset() * 60000;
+        const tehranOffsetMs = 3.5 * 3600000;
+        const kickoff = localMs + browserOffsetMs + tehranOffsetMs;
 
         try {
           await sbFetch(
@@ -1468,7 +1556,7 @@
               <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
             </div>
             <div style="display:flex;gap:8px">
-              <button class="btn-sm btn-gold" id="btn-res-${m.match_id}" onclick="this.disabled=true;this.textContent='در حال پردازش...';setResult('${m.match_id}',${pts})">✓ ثبت نتیجه و امتیازدهی</button>
+              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه و امتیازدهی</button>
               <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
             </div>
           </div>`;
@@ -1511,22 +1599,22 @@
             `match_id=eq.${matchId}&pick=eq.${result}`,
           );
 
-          // ۳. امتیازدهی به هر برنده — همزمان با Promise.all
+          // ۳. امتیازدهی به هر برنده
           if (winners && winners.length > 0) {
-            await Promise.all(
-              winners.map((pred) =>
-                sbFetch(
+            for (const pred of winners) {
+              const userArr = await sbGet("users", `phone=eq.${pred.phone}`);
+              if (userArr && userArr[0]) {
+                const newScore = (userArr[0].score || 0) + pts;
+                await sbFetch(
                   "POST",
                   "rpc/add_score",
                   { p_phone: pred.phone, p_pts: pts },
                   "",
-                ),
-              ),
-            );
+                );
+              }
+            }
           }
 
-          matchesCache = null; // cache رو پاک کن
-          lbCache = null;
           alert(`✅ نتیجه ثبت شد!\n${winners?.length || 0} نفر امتیاز گرفتند.`);
           loadAdminMatches();
           if (currentUser) updateUBar();
@@ -1575,6 +1663,151 @@
         } catch (e) {
           el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
         }
+      }
+
+      // =============================================
+      //  POPUP — نمایش خلاصه پیش‌بینی‌های امروز
+      // =============================================
+      function showPredictionsPopup() {
+        const now = Date.now();
+        const todayStart = new Date();
+        todayStart.setHours(0,0,0,0);
+        const todayEnd = new Date();
+        todayEnd.setHours(23,59,59,999);
+
+        // بازی‌های امروز که هنوز قفل نشدن
+        const todayMatches = allMatches.filter(m => {
+          const d = new Date(m.kickoff);
+          return d >= todayStart && d <= todayEnd && !m.result;
+        });
+
+        if (!todayMatches.length) return;
+
+        const rMap = (m, pick) => {
+          if (!pick) return null;
+          if (pick === "team1") return "برد " + m.team1;
+          if (pick === "draw") return "مساوی";
+          return "برد " + m.team2;
+        };
+
+        const hasPick = todayMatches.some(m => myPredictions[m.match_id]);
+        const allPicked = todayMatches.every(m => myPredictions[m.match_id]);
+
+        document.getElementById("popup-sub").textContent = allPicked
+          ? "همه بازی‌های امروز رو پیش‌بینی کردی 🎉"
+          : "می‌تونی پیش‌بینی‌هات رو تا ۱ ساعت قبل از هر بازی تغییر بدی";
+
+        document.getElementById("popup-match-list").innerHTML = todayMatches.map(m => {
+          const pick = myPredictions[m.match_id];
+          const locked = now >= m.kickoff - 3600000;
+          const timeStr = new Date(m.kickoff).toLocaleTimeString("fa-IR", {hour:"2-digit", minute:"2-digit"});
+          return `<div class="popup-match-item">
+            <div>
+              <div class="popup-match-teams">${m.flag1} ${m.team1} vs ${m.team2} ${m.flag2}</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px">⏰ ${timeStr}${locked?" · 🔒 قفل شده":""}</div>
+            </div>
+            <div class="${pick?"popup-match-pick":"popup-match-nopick"}">${pick ? rMap(m,pick) : "ثبت نشده"}</div>
+          </div>`;
+        }).join("");
+
+        document.getElementById("predictions-popup").classList.add("active");
+      }
+
+      function closePopup() {
+        document.getElementById("predictions-popup").classList.remove("active");
+      }
+
+      function closePopupOnOverlay(e) {
+        if (e.target === document.getElementById("predictions-popup")) closePopup();
+      }
+
+      // =============================================
+      //  HISTORY — تاریخچه بازی‌های پایان‌یافته
+      // =============================================
+      async function loadHistory() {
+        if (!currentUser) return;
+        document.getElementById("history-loading").style.display = "block";
+        document.getElementById("history-list").innerHTML = "";
+        try {
+          // اگه allMatches خالیه اول بارگذاری کن
+          if (!allMatches.length) {
+            const [rawMatches, rawPreds] = await Promise.all([
+              sbGet("matches", "order=kickoff.asc"),
+              sbGet("predictions", `phone=eq.${currentUser.phone}`)
+            ]);
+            allMatches = rawMatches || [];
+            myPredictions = {};
+            (rawPreds || []).forEach(p => { myPredictions[p.match_id] = p.pick; });
+          }
+
+          const done = allMatches.filter(m => m.result).sort((a,b) => b.kickoff - a.kickoff);
+
+          if (!done.length) {
+            document.getElementById("history-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز هیچ بازی‌ای پایان نیافته</div></div>`;
+            document.getElementById("history-loading").style.display = "none";
+            return;
+          }
+
+          let correct = 0, wrong = 0, missed = 0;
+          const rMap = (m, pick) => {
+            if (!pick) return "ثبت نکردید";
+            if (pick === "team1") return "برد " + m.team1;
+            if (pick === "draw") return "مساوی";
+            return "برد " + m.team2;
+          };
+          const rMapResult = (m) => {
+            if (m.result === "team1") return "برد " + m.team1;
+            if (m.result === "draw") return "مساوی";
+            return "برد " + m.team2;
+          };
+
+          let html = "";
+          done.forEach(m => {
+            const pick = myPredictions[m.match_id];
+            const isCorrect = pick && pick === m.result;
+            const isMissed = !pick;
+            if (isCorrect) correct++;
+            else if (isMissed) missed++;
+            else wrong++;
+            const pts = m.pts || PTS_MAP[m.stage] || 3;
+            html += `<div class="match-card">
+              <div class="match-header">
+                <span class="match-time">${new Date(m.kickoff).toLocaleDateString("fa-IR",{month:"short",day:"numeric"})}</span>
+                <span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage}</span>
+                <span class="badge ${isCorrect?"badge-open":isMissed?"badge-done":"badge-locked"}">${isMissed?"—":isCorrect?"✅ درست":"❌ اشتباه"}</span>
+              </div>
+              <div class="match-teams">
+                <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
+                <div class="vs">${m.score||"FT"}</div>
+                <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+                <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
+                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">نتیجه واقعی</div>
+                  <div style="font-weight:700">${rMapResult(m)}${m.score?" ("+m.score+")":""}</div>
+                </div>
+                <div style="background:${isCorrect?"var(--green-bg)":isMissed?"var(--bg3)":"var(--red-bg)"};border-radius:8px;padding:8px;text-align:center">
+                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">پیش‌بینی شما</div>
+                  <div style="font-weight:700;color:${isCorrect?"var(--primary)":isMissed?"var(--text3)":"var(--red)"}">${rMap(m,pick)}</div>
+                </div>
+              </div>
+              ${isCorrect?`<div style="text-align:center;font-size:12px;color:var(--primary);font-weight:700;margin-top:8px">+${pts} امتیاز 🎉</div>`:""}
+            </div>`;
+          });
+
+          const myScore = correct > 0 ? done.filter(m => myPredictions[m.match_id] === m.result).reduce((s,m) => s + (m.pts||PTS_MAP[m.stage]||3), 0) : 0;
+
+          document.getElementById("history-list").innerHTML = `
+            <div class="stats-grid" style="margin-bottom:16px">
+              <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${correct}</div><div class="stat-lbl">✅ درست</div></div>
+              <div class="stat-box"><div class="stat-num" style="color:var(--red)">${wrong}</div><div class="stat-lbl">❌ اشتباه</div></div>
+              <div class="stat-box"><div class="stat-num" style="color:var(--text3)">${missed}</div><div class="stat-lbl">⬜ ثبت نشده</div></div>
+            </div>
+            ${html}`;
+        } catch(e) {
+          document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
+        }
+        document.getElementById("history-loading").style.display = "none";
       }
 
       // =============================================
