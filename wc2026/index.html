@@ -60,7 +60,7 @@
         overflow: hidden;
       }
       .hero-logo {
-        height: 46px;
+        height: 120px;
         object-fit: contain;
         margin-bottom: 14px;
         cursor: pointer;
@@ -68,7 +68,7 @@
         z-index: 1;
       }
       .hero-trophy {
-        font-size: 44px;
+        font-size: 70px;
         margin-bottom: 6px;
         display: block;
         animation: float 3s ease-in-out infinite;
@@ -726,6 +726,13 @@
       >
         🏅 جدول
       </button>
+      <button
+        class="tab-btn"
+        onclick="showTab('history')"
+        id="tab-history"
+      >
+        📊 نتایج من
+      </button>
     </div>
 
     <div class="content">
@@ -822,6 +829,14 @@
           <div class="spinner"></div>
         </div>
         <div id="lb-list"></div>
+      </div>
+
+      <!-- HISTORY -->
+      <div id="sec-history" class="section">
+        <div id="history-loading" class="loading">
+          <div class="spinner"></div>در حال بارگذاری...
+        </div>
+        <div id="history-list"></div>
       </div>
 
       <!-- ADMIN (hidden tab, accessible via logo) -->
@@ -1124,6 +1139,7 @@
         showSec(t);
         if (t === "matches") loadMatches();
         if (t === "leaderboard") loadLB();
+        if (t === "history") loadHistory();
         if (t === "admin" && adminLoggedIn) {
           loadAdminMatches();
           loadAdminUsers();
@@ -1564,6 +1580,87 @@
         } catch (e) {
           el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
         }
+      }
+
+      // =============================================
+      //  HISTORY — تاریخچه بازی‌های پایان‌یافته
+      // =============================================
+      async function loadHistory() {
+        if (!currentUser) return;
+        document.getElementById("history-loading").style.display = "block";
+        document.getElementById("history-list").innerHTML = "";
+        try {
+          if (!allMatches.length) {
+            const [rawMatches, rawPreds] = await Promise.all([
+              sbGet("matches", "order=kickoff.asc"),
+              sbGet("predictions", `phone=eq.${currentUser.phone}`)
+            ]);
+            allMatches = rawMatches || [];
+            myPredictions = {};
+            (rawPreds || []).forEach(p => { myPredictions[p.match_id] = p.pick; });
+          }
+          const done = allMatches.filter(m => m.result).sort((a,b) => b.kickoff - a.kickoff);
+          if (!done.length) {
+            document.getElementById("history-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز هیچ بازی‌ای پایان نیافته</div></div>`;
+            document.getElementById("history-loading").style.display = "none";
+            return;
+          }
+          let correct = 0, wrong = 0, missed = 0;
+          const rMap = (m, pick) => {
+            if (!pick) return "ثبت نکردید";
+            if (pick === "team1") return "برد " + m.team1;
+            if (pick === "draw") return "مساوی";
+            return "برد " + m.team2;
+          };
+          const rMapResult = (m) => {
+            if (m.result === "team1") return "برد " + m.team1;
+            if (m.result === "draw") return "مساوی";
+            return "برد " + m.team2;
+          };
+          let html = "";
+          done.forEach(m => {
+            const pick = myPredictions[m.match_id];
+            const isCorrect = pick && pick === m.result;
+            const isMissed = !pick;
+            if (isCorrect) correct++;
+            else if (isMissed) missed++;
+            else wrong++;
+            const pts = m.pts || PTS_MAP[m.stage] || 3;
+            html += `<div class="match-card">
+              <div class="match-header">
+                <span class="match-time">${new Date(m.kickoff).toLocaleDateString("fa-IR",{month:"short",day:"numeric"})}</span>
+                <span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage}</span>
+                <span class="badge ${isCorrect?"badge-open":isMissed?"badge-done":"badge-locked"}">${isMissed?"—":isCorrect?"✅ درست":"❌ اشتباه"}</span>
+              </div>
+              <div class="match-teams">
+                <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
+                <div class="vs">${m.score||"FT"}</div>
+                <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+                <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
+                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">نتیجه واقعی</div>
+                  <div style="font-weight:700">${rMapResult(m)}${m.score?" ("+m.score+")":""}</div>
+                </div>
+                <div style="background:${isCorrect?"var(--green-bg)":isMissed?"var(--bg3)":"var(--red-bg)"};border-radius:8px;padding:8px;text-align:center">
+                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">پیش‌بینی شما</div>
+                  <div style="font-weight:700;color:${isCorrect?"var(--primary)":isMissed?"var(--text3)":"var(--red)"}">${rMap(m,pick)}</div>
+                </div>
+              </div>
+              ${isCorrect?`<div style="text-align:center;font-size:12px;color:var(--primary);font-weight:700;margin-top:8px">+${pts} امتیاز 🎉</div>`:""}
+            </div>`;
+          });
+          document.getElementById("history-list").innerHTML = `
+            <div class="stats-grid" style="margin-bottom:16px">
+              <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${correct}</div><div class="stat-lbl">✅ درست</div></div>
+              <div class="stat-box"><div class="stat-num" style="color:var(--red)">${wrong}</div><div class="stat-lbl">❌ اشتباه</div></div>
+              <div class="stat-box"><div class="stat-num" style="color:var(--text3)">${missed}</div><div class="stat-lbl">⬜ ثبت نشده</div></div>
+            </div>
+            ${html}`;
+        } catch(e) {
+          document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
+        }
+        document.getElementById("history-loading").style.display = "none";
       }
 
       // =============================================
