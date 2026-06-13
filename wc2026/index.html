@@ -1470,6 +1470,13 @@
                 minute: "2-digit",
               });
               const pts = m.pts || PTS_MAP[m.stage] || 3;
+              // محاسبه تاریخ و ساعت فعلی بازی برای نمایش در فرم ویرایش
+              const kickoffDate = new Date(m.kickoff);
+              const tehranOffset = 3.5 * 3600000;
+              const tehranTime = new Date(m.kickoff + tehranOffset - new Date().getTimezoneOffset() * 60000);
+              const editDate = tehranTime.toISOString().slice(0,10);
+              const editTime = tehranTime.toISOString().slice(11,16);
+
               const doneHtml = m.result
                 ? `<div class="alert alert-success" style="margin:8px 0 0;padding:8px 12px">✅ نتیجه ثبت شده: ${m.result === "team1" ? "برد " + m.team1 : m.result === "draw" ? "مساوی" : "برد " + m.team2} ${m.score || ""}</div>`
                 : `<div style="margin-top:10px">
@@ -1482,9 +1489,18 @@
               </select>
               <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
             </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه و امتیازدهی</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه</button>
+              <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditTime('${m.match_id}')">🕐 ویرایش زمان</button>
               <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
+            </div>
+            <div id="edit-time-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+              <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px">ویرایش زمان بازی (به وقت تهران)</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+                <input type="date" id="edit-date-${m.match_id}" value="${editDate}" style="margin-bottom:0"/>
+                <input type="time" id="edit-time-val-${m.match_id}" value="${editTime}" style="margin-bottom:0"/>
+              </div>
+              <button class="btn-sm btn-gold" onclick="saveEditTime('${m.match_id}')">✓ ذخیره زمان جدید</button>
             </div>
           </div>`;
               return `<div class="admin-match">
@@ -1664,6 +1680,29 @@
           document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
         }
         document.getElementById("history-loading").style.display = "none";
+      }
+
+      // =============================================
+      //  ویرایش زمان بازی
+      // =============================================
+      function toggleEditTime(matchId) {
+        const el = document.getElementById("edit-time-" + matchId);
+        el.style.display = el.style.display === "none" ? "block" : "none";
+      }
+
+      async function saveEditTime(matchId) {
+        const date = document.getElementById("edit-date-" + matchId)?.value;
+        const time = document.getElementById("edit-time-val-" + matchId)?.value;
+        if (!date || !time) return alert("تاریخ و ساعت را وارد کنید");
+        if (!confirm("زمان بازی تغییر کند؟")) return;
+        try {
+          const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
+          await sbPatch("matches", { kickoff }, `match_id=eq.${matchId}`);
+          alert("✅ زمان بازی بروز شد");
+          loadAdminMatches();
+        } catch(e) {
+          alert("خطا: " + e.message);
+        }
       }
 
       // =============================================
