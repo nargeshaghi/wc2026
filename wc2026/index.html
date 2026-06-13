@@ -60,7 +60,7 @@
         overflow: hidden;
       }
       .hero-logo {
-        height: 120px;
+        height: 46px;
         object-fit: contain;
         margin-bottom: 14px;
         cursor: pointer;
@@ -68,7 +68,7 @@
         z-index: 1;
       }
       .hero-trophy {
-        font-size: 70px;
+        font-size: 44px;
         margin-bottom: 6px;
         display: block;
         animation: float 3s ease-in-out infinite;
@@ -1175,14 +1175,16 @@
 
       function renderMatches() {
         const el = document.getElementById("matches-list");
-        if (!allMatches.length) {
-          el.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">هنوز بازی‌ای اضافه نشده<br><span style="opacity:.6;font-size:12px">ادمین بازی‌های امشب را به زودی اضافه می‌کند</span></div></div>`;
+        // فقط بازی‌های فعال (بدون نتیجه)
+        const active = allMatches.filter(m => !m.result);
+        if (!active.length) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">بازی فعالی برای پیش‌بینی وجود ندارد<br><span style="opacity:.6;font-size:12px">نتایج را در تب «نتایج من» ببینید</span></div></div>`;
           return;
         }
         const now = Date.now();
         // گروه‌بندی بر اساس تاریخ
         const byDate = {};
-        allMatches.forEach((m) => {
+        active.forEach((m) => {
           const d = new Date(m.kickoff).toLocaleDateString("fa-IR", {
             weekday: "long",
             day: "numeric",
@@ -1268,12 +1270,13 @@
         if (!m || Date.now() >= m.kickoff - 3600000)
           return alert("⏰ زمان پیش‌بینی تمام شده");
         try {
-          // upsert: اگه قبلاً ثبت کرده update میشه، وگرنه insert
-          await sbUpsert("predictions", {
-            phone: currentUser.phone,
-            match_id: matchId,
-            pick,
-          });
+          // چک کن قبلاً ثبت کرده یا نه
+          const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
+          if (existing && existing.length > 0) {
+            await sbPatch("predictions", { pick }, `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
+          } else {
+            await sbFetch("POST", "predictions", [{ phone: currentUser.phone, match_id: matchId, pick }], "");
+          }
           myPredictions[matchId] = pick;
           renderMatches();
         } catch (e) {
