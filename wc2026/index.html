@@ -5,798 +5,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>مسابقه پیش‌بینی جام جهانی ۲۰۲۶ | افق دارو</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --primary: #1a7a3c;
-        --primary-light: #25a352;
-        --primary-dark: #0f5228;
-        --accent: #f0b429;
-        --bg: #f7f9f8;
-        --bg2: #ffffff;
-        --bg3: #f0f5f2;
-        --card: #ffffff;
-        --border: #e0ebe4;
-        --border2: #c8ddd0;
-        --text: #1a2e22;
-        --text2: #4a6657;
-        --text3: #7a9e8a;
-        --red: #e05252;
-        --red-bg: #fff0f0;
-        --gold: #d4960a;
-        --gold-bg: #fffbf0;
-        --green-bg: #f0faf4;
-        --radius: 12px;
-        --shadow: 0 2px 12px rgba(26, 122, 60, 0.08);
-        --shadow-md: 0 4px 20px rgba(26, 122, 60, 0.12);
+        --primary: #1a7a3c; --primary-light: #25a352; --primary-dark: #0f5228;
+        --accent: #f0b429; --bg: #f7f9f8; --bg2: #ffffff; --bg3: #f0f5f2;
+        --card: #ffffff; --border: #e0ebe4; --border2: #c8ddd0;
+        --text: #1a2e22; --text2: #4a6657; --text3: #7a9e8a;
+        --red: #e05252; --red-bg: #fff0f0; --gold: #d4960a; --gold-bg: #fffbf0;
+        --green-bg: #f0faf4; --radius: 12px;
+        --shadow: 0 2px 12px rgba(26,122,60,0.08);
+        --shadow-md: 0 4px 20px rgba(26,122,60,0.12);
       }
-      body {
-        font-family: "Vazirmatn", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        direction: rtl;
-      }
+      body { font-family: "Vazirmatn", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; direction: rtl; }
 
-      /* HERO */
-      .hero {
-        background: linear-gradient(
-          160deg,
-          #0d3d1f 0%,
-          #1a7a3c 60%,
-          #25a352 100%
-        );
-        padding: 28px 20px 24px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-      .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image:
-          repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px),
-          repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px);
-        pointer-events: none;
-      }
-      .hero-logo {
-        height: 120px;
-        object-fit: contain;
-        margin-bottom: 14px;
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
-      }
-    
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-6px);
-        }
-      }
-       /* PRIZE CARDS */
-      .prize-label {
-        font-size: 15px;
-        font-weight: 900;
-        color: #fff;
-        letter-spacing: 1px;
-        margin-bottom: 14px;
-        position: relative;
-        z-index: 1;
-      }
-      .prize-row {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 6px;
-        justify-content: center;
-        align-items: flex-end;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 1;
-      }
-      .prize-card {
-        flex: 1 1 0;
-        min-width: 0;
-        border-radius: 14px;
-        padding: 8px 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        position: relative;
-        animation: float 3.5s ease-in-out infinite;
-        border: 1px solid rgba(255,255,255,0.25);
-      }
-      .prize-card:nth-child(2) { animation-delay: 0.4s; }
-      .prize-card:nth-child(3) { animation-delay: 0.8s; }
-      .prize-gold,
-      .prize-silver,
-      .prize-bronze {
-        background: rgba(255,255,255,0.12);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
-      }
-      .prize-gold {
-        transform: translateY(-14px) scale(1.08);
-        z-index: 2;
-        order: 2;
-      }
-      .prize-silver {
-        order: 1;
-      }
-      .prize-bronze {
-        order: 3;
-      }
-      .prize-medal {
-        font-size: 22px;
-        flex-shrink: 0;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-      }
-      .prize-text {
-        text-align: right;
-        min-width: 0;
-        overflow: hidden;
-      }
-      .prize-rank-tag {
-        font-size: 9px;
-        font-weight: 700;
-        color: rgba(255,255,255,0.75);
-        letter-spacing: 0.3px;
-        margin-bottom: 1px;
-        white-space: nowrap;
-      }
-      .prize-amount-row {
-        display: flex;
-        align-items: baseline;
-        gap: 3px;
-        white-space: nowrap;
-      }
-      .prize-amount {
-        font-size: 18px;
-        font-weight: 800;
-        color: #fff;
-        line-height: 1;
-        text-shadow: 0 2px 6px rgba(0,0,0,0.25);
-      }
-      .prize-unit {
-        font-size: 10px;
-        color: rgba(255,255,255,0.85);
-        font-weight: 700;
-        white-space: nowrap;
-      }
-    
-      .hero-title {
-        font-size: 20px;
-        font-weight: 800;
-        color: #fff;
-        position: relative;
-        z-index: 1;
-        line-height: 1.4;
-      }
-      .hero-sub {
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 5px;
-        position: relative;
-        z-index: 1;
-      }
-      .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-top: 12px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        color: #fff;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 5px 14px;
-        border-radius: 100px;
-        position: relative;
-        z-index: 1;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
+      /* ===== HERO ===== */
+      .hero { background: linear-gradient(160deg,#0d3d1f 0%,#1a7a3c 60%,#25a352 100%); padding: 28px 20px 24px; text-align: center; position: relative; overflow: hidden; }
+      .hero::before { content:""; position:absolute; inset:0; background-image: repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0px,rgba(255,255,255,.04) 1px,transparent 1px,transparent 40px), repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0px,rgba(255,255,255,.04) 1px,transparent 1px,transparent 40px); pointer-events:none; }
+      .hero-logo { height:120px; object-fit:contain; margin-bottom:14px; cursor:pointer; position:relative; z-index:1; }
+      @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+      .prize-label { font-size:15px; font-weight:900; color:#fff; letter-spacing:1px; margin-bottom:14px; position:relative; z-index:1; }
+      .prize-row { display:flex; flex-wrap:nowrap; gap:6px; justify-content:center; align-items:flex-end; margin-bottom:24px; position:relative; z-index:1; }
+      .prize-card { flex:1 1 0; min-width:0; border-radius:14px; padding:8px 4px; display:flex; align-items:center; justify-content:center; gap:6px; position:relative; animation:float 3.5s ease-in-out infinite; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.12); box-shadow:0 4px 14px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.15); }
+      .prize-card:nth-child(2){animation-delay:.4s}
+      .prize-card:nth-child(3){animation-delay:.8s}
+      .prize-gold{transform:translateY(-14px) scale(1.08);z-index:2;order:2}
+      .prize-silver{order:1} .prize-bronze{order:3}
+      .prize-medal{font-size:22px;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+      .prize-text{text-align:right;min-width:0;overflow:hidden}
+      .prize-rank-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.3px;margin-bottom:1px;white-space:nowrap}
+      .prize-amount-row{display:flex;align-items:baseline;gap:3px;white-space:nowrap}
+      .prize-amount{font-size:18px;font-weight:800;color:#fff;line-height:1;text-shadow:0 2px 6px rgba(0,0,0,.25)}
+      .prize-unit{font-size:10px;color:rgba(255,255,255,.85);font-weight:700;white-space:nowrap}
+      .hero-title{font-size:20px;font-weight:800;color:#fff;position:relative;z-index:1;line-height:1.4}
+      .hero-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:5px;position:relative;z-index:1}
+      .hero-badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:600;padding:5px 14px;border-radius:100px;position:relative;z-index:1;border:1px solid rgba(255,255,255,.2)}
 
-      /* USER BAR */
-      .user-bar {
-        background: #fff;
-        border-bottom: 1px solid var(--border);
-        padding: 10px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 12px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-      }
+      /* ===== USER BAR ===== */
+      .user-bar{background:#fff;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 
-      /* TABS */
-      .tabs {
-        display: flex;
-        background: #fff;
-        border-bottom: 1px solid var(--border);
-        overflow-x: auto;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      }
-      .tabs::-webkit-scrollbar {
-        display: none;
-      }
-      .tab-btn {
-        flex: 1;
-        min-width: 80px;
-        padding: 14px 8px;
-        font-family: "Vazirmatn", sans-serif;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text3);
-        background: none;
-        border: none;
-        border-bottom: 2px solid transparent;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.2s;
-      }
-      .tab-btn.active {
-        color: var(--primary);
-        border-bottom-color: var(--primary);
-      }
+      /* ===== TABS ===== */
+      .tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{flex:1;min-width:80px;padding:14px 8px;font-family:"Vazirmatn",sans-serif;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s}
+      .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
 
-      /* CONTENT */
-      .content {
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 16px;
-      }
-      .section {
-        display: none;
-      }
-      .section.active {
-        display: block;
-      }
+      /* ===== CONTENT ===== */
+      .content{max-width:500px;margin:0 auto;padding:16px}
+      .section{display:none}
+      .section.active{display:block}
 
-      /* CARD */
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 18px;
-        margin-bottom: 14px;
-        box-shadow: var(--shadow);
-      }
-      .card-title {
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--text);
-      }
+      /* ===== CARD ===== */
+      .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+      .card-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--text)}
 
-      /* FORM */
-      label {
-        display: block;
-        font-size: 12px;
-        color: var(--text2);
-        margin-bottom: 5px;
-        font-weight: 600;
-      }
-      input,
-      select {
-        width: 100%;
-        padding: 11px 14px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        color: var(--text);
-        font-family: "Vazirmatn", sans-serif;
-        font-size: 14px;
-        margin-bottom: 12px;
-        transition: all 0.2s;
-        outline: none;
-        direction: rtl;
-      }
-      input:focus,
-      select:focus {
-        border-color: var(--primary);
-        background: #fff;
-        box-shadow: 0 0 0 3px rgba(26, 122, 60, 0.08);
-      }
-      select option {
-        background: #fff;
-      }
+      /* ===== FORM ===== */
+      label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:600}
+      input,select{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:"Vazirmatn",sans-serif;font-size:14px;margin-bottom:12px;transition:all .2s;outline:none;direction:rtl}
+      input:focus,select:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(26,122,60,.08)}
+      select option{background:#fff}
 
-      /* BUTTONS */
-      .btn {
-        width: 100%;
-        padding: 13px;
-        font-family: "Vazirmatn", sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .btn-primary {
-        background: var(--primary);
-        color: #fff;
-        box-shadow: 0 3px 12px rgba(26, 122, 60, 0.25);
-      }
-      .btn-primary:hover {
-        background: var(--primary-light);
-        transform: translateY(-1px);
-        box-shadow: 0 5px 16px rgba(26, 122, 60, 0.3);
-      }
-      .btn-secondary {
-        background: var(--bg3);
-        color: var(--text2);
-        border: 1px solid var(--border);
-      }
-      .btn-sm {
-        padding: 7px 14px;
-        font-size: 12px;
-        width: auto;
-        font-family: "Vazirmatn", sans-serif;
-        font-weight: 600;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-      }
-      .btn-gold {
-        background: var(--gold);
-        color: #fff;
-      }
-      .btn-danger {
-        background: var(--red-bg);
-        color: var(--red);
-        border: 1px solid #ffd0d0 !important;
-      }
+      /* ===== BUTTONS ===== */
+      .btn{width:100%;padding:13px;font-family:"Vazirmatn",sans-serif;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all .2s}
+      .btn-primary{background:var(--primary);color:#fff;box-shadow:0 3px 12px rgba(26,122,60,.25)}
+      .btn-primary:hover{background:var(--primary-light);transform:translateY(-1px);box-shadow:0 5px 16px rgba(26,122,60,.3)}
+      .btn-secondary{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+      .btn-sm{padding:7px 14px;font-size:12px;width:auto;font-family:"Vazirmatn",sans-serif;font-weight:600;border-radius:8px;border:none;cursor:pointer}
+      .btn-gold{background:var(--gold);color:#fff}
+      .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid #ffd0d0!important}
 
-      /* ALERTS */
-      .alert {
-        padding: 11px 14px;
-        border-radius: 10px;
-        font-size: 13px;
-        margin-bottom: 12px;
-        line-height: 1.6;
-      }
-      .alert-success {
-        background: var(--green-bg);
-        border: 1px solid #b8e8c8;
-        color: var(--primary-dark);
-      }
-      .alert-error {
-        background: var(--red-bg);
-        border: 1px solid #ffd0d0;
-        color: #c03030;
-      }
-      .alert-info {
-        background: var(--gold-bg);
-        border: 1px solid #fde8a0;
-        color: #8a6200;
-      }
+      /* ===== ALERTS ===== */
+      .alert{padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:12px;line-height:1.6}
+      .alert-success{background:var(--green-bg);border:1px solid #b8e8c8;color:var(--primary-dark)}
+      .alert-error{background:var(--red-bg);border:1px solid #ffd0d0;color:#c03030}
+      .alert-info{background:var(--gold-bg);border:1px solid #fde8a0;color:#8a6200}
 
-      /* MATCH CARD */
-      .match-card {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 16px;
-        margin-bottom: 10px;
-        box-shadow: var(--shadow);
-        transition: box-shadow 0.2s;
-      }
-      .match-card:hover {
-        box-shadow: var(--shadow-md);
-      }
-      .match-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 12px;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .match-time {
-        font-size: 11px;
-        color: var(--text3);
-        font-weight: 600;
-      }
-      .badge {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 100px;
-        font-size: 10px;
-        font-weight: 700;
-      }
-      .badge-open {
-        background: #e8f5ee;
-        color: var(--primary);
-        border: 1px solid #b8ddc8;
-      }
-      .badge-locked {
-        background: var(--red-bg);
-        color: var(--red);
-        border: 1px solid #ffd0d0;
-      }
-      .badge-done {
-        background: var(--bg3);
-        color: var(--text2);
-        border: 1px solid var(--border);
-      }
-      .badge-stage {
-        background: var(--gold-bg);
-        color: var(--gold);
-        border: 1px solid #fde8a0;
-      }
+      /* ===== MATCH CARD ===== */
+      .match-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);transition:box-shadow .2s}
+      .match-card:hover{box-shadow:var(--shadow-md)}
+      .match-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:6px;flex-wrap:wrap}
+      .match-time{font-size:11px;color:var(--text3);font-weight:600}
+      .badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700}
+      .badge-open{background:#e8f5ee;color:var(--primary);border:1px solid #b8ddc8}
+      .badge-locked{background:var(--red-bg);color:var(--red);border:1px solid #ffd0d0}
+      .badge-done{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+      .badge-stage{background:var(--gold-bg);color:var(--gold);border:1px solid #fde8a0}
+      .match-teams{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+      .team{text-align:center;flex:1}
+      .team-flag{font-size:32px;display:block;margin-bottom:5px;font-family:"Segoe UI Emoji","Noto Color Emoji","Apple Color Emoji","Twemoji Mozilla",sans-serif}
+      .team-name{font-size:12px;color:var(--text2);font-weight:700;line-height:1.3}
+      .vs{font-size:12px;color:var(--text3);font-weight:800;background:var(--bg3);padding:6px 10px;border-radius:8px}
+      .predict-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+      .predict-btn{padding:10px 4px;font-family:"Vazirmatn",sans-serif;font-size:11px;font-weight:700;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text2);cursor:pointer;transition:all .2s;line-height:1.6}
+      .predict-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--green-bg)}
+      .predict-btn.selected{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(26,122,60,.2)}
+      .predict-btn:disabled{opacity:.5;cursor:not-allowed}
+      .match-locked-msg{text-align:center;font-size:12px;color:var(--red);font-weight:600;padding:8px;background:var(--red-bg);border-radius:8px;border:1px solid #ffd0d0}
+      .match-result-row{text-align:center;font-size:13px;font-weight:700;color:var(--gold);padding:6px 0}
+      .my-pick-row{text-align:center;font-size:12px;padding:4px 0;font-weight:600}
+      .my-pick-correct{color:var(--primary)} .my-pick-wrong{color:var(--red)} .my-pick-neutral{color:var(--text3)}
 
-      /* TEAMS */
-      .match-teams {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        margin-bottom: 14px;
-      }
-      .team {
-        text-align: center;
-        flex: 1;
-      }
-      .team-flag {
-        font-size: 32px;
-        display: block;
-        margin-bottom: 5px;
-        font-family: "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", "Twemoji Mozilla", sans-serif;
-      }
-      .team-name {
-        font-size: 12px;
-        color: var(--text2);
-        font-weight: 700;
-        line-height: 1.3;
-      }
-      .vs {
-        font-size: 12px;
-        color: var(--text3);
-        font-weight: 800;
-        background: var(--bg3);
-        padding: 6px 10px;
-        border-radius: 8px;
-      }
+      /* ===== STATS ===== */
+      .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+      .stat-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+      .stat-num{font-size:22px;font-weight:800;color:var(--primary)}
+      .stat-lbl{font-size:11px;color:var(--text3);margin-top:3px}
 
-      /* PREDICT BUTTONS */
-      .predict-btns {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 6px;
-      }
-      .predict-btn {
-        padding: 10px 4px;
-        font-family: "Vazirmatn", sans-serif;
-        font-size: 11px;
-        font-weight: 700;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        background: #fff;
-        color: var(--text2);
-        cursor: pointer;
-        transition: all 0.2s;
-        line-height: 1.6;
-      }
-      .predict-btn:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-        background: var(--green-bg);
-      }
-      .predict-btn.selected {
-        background: var(--primary);
-        border-color: var(--primary);
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(26, 122, 60, 0.2);
-      }
-      .match-locked-msg {
-        text-align: center;
-        font-size: 12px;
-        color: var(--red);
-        font-weight: 600;
-        padding: 8px;
-        background: var(--red-bg);
-        border-radius: 8px;
-        border: 1px solid #ffd0d0;
-      }
-      .match-result-row {
-        text-align: center;
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--gold);
-        padding: 6px 0;
-      }
-      .my-pick-row {
-        text-align: center;
-        font-size: 12px;
-        padding: 4px 0;
-        font-weight: 600;
-      }
-      .my-pick-correct {
-        color: var(--primary);
-      }
-      .my-pick-wrong {
-        color: var(--red);
-      }
-      .my-pick-neutral {
-        color: var(--text3);
-      }
+      /* ===== LEADERBOARD ===== */
+      .rank-row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:7px;box-shadow:var(--shadow);transition:box-shadow .2s}
+      .rank-row:hover{box-shadow:var(--shadow-md)}
+      .rank-row.top1{border-color:#f0b429;background:linear-gradient(135deg,#fffbf0,#fff)}
+      .rank-row.top2{border-color:#b0b8b4;background:linear-gradient(135deg,#f8f9f8,#fff)}
+      .rank-row.top3{border-color:#c8936a;background:linear-gradient(135deg,#fdf5f0,#fff)}
+      .rank-medal{font-size:20px;width:24px;text-align:center}
+      .rank-num{width:22px;font-size:12px;color:var(--text3);text-align:center;font-weight:700}
+      .rank-info{flex:1;min-width:0}
+      .rank-name{font-size:13px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rank-phone{font-size:11px;color:var(--text3);margin-top:2px}
+      .pbar{height:3px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
+      .pbar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:2px}
+      .rank-score-col{text-align:center}
+      .rank-score{font-size:18px;font-weight:800;color:var(--primary)}
+      .rank-score-lbl{font-size:10px;color:var(--text3)}
 
-      /* STATS */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 16px;
-      }
-      .stat-box {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        text-align: center;
-        box-shadow: var(--shadow);
-      }
-      .stat-num {
-        font-size: 22px;
-        font-weight: 800;
-        color: var(--primary);
-      }
-      .stat-lbl {
-        font-size: 11px;
-        color: var(--text3);
-        margin-top: 3px;
-      }
+      /* ===== WINNER ===== */
+      .winner-banner{background:linear-gradient(135deg,var(--gold-bg),#fff);border:1.5px solid #f0d070;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 4px 16px rgba(212,150,10,.1)}
+      .winner-title{font-size:15px;font-weight:800;color:var(--gold);margin-bottom:10px;text-align:center}
+      .winner-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #fde8a0;font-size:13px}
+      .winner-item:last-child{border-bottom:none}
 
-      /* LEADERBOARD */
-      .rank-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 14px;
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        margin-bottom: 7px;
-        box-shadow: var(--shadow);
-        transition: box-shadow 0.2s;
-      }
-      .rank-row:hover {
-        box-shadow: var(--shadow-md);
-      }
-      .rank-row.top1 {
-        border-color: #f0b429;
-        background: linear-gradient(135deg, #fffbf0, #fff);
-      }
-      .rank-row.top2 {
-        border-color: #b0b8b4;
-        background: linear-gradient(135deg, #f8f9f8, #fff);
-      }
-      .rank-row.top3 {
-        border-color: #c8936a;
-        background: linear-gradient(135deg, #fdf5f0, #fff);
-      }
-      .rank-medal {
-        font-size: 20px;
-        width: 24px;
-        text-align: center;
-      }
-      .rank-num {
-        width: 22px;
-        font-size: 12px;
-        color: var(--text3);
-        text-align: center;
-        font-weight: 700;
-      }
-      .rank-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .rank-name {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--text);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .rank-phone {
-        font-size: 11px;
-        color: var(--text3);
-        margin-top: 2px;
-      }
-      .pbar {
-        height: 3px;
-        background: var(--border);
-        border-radius: 2px;
-        margin-top: 5px;
-        overflow: hidden;
-      }
-      .pbar-fill {
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          var(--primary),
-          var(--primary-light)
-        );
-        border-radius: 2px;
-      }
-      .rank-score-col {
-        text-align: center;
-      }
-      .rank-score {
-        font-size: 18px;
-        font-weight: 800;
-        color: var(--primary);
-      }
-      .rank-score-lbl {
-        font-size: 10px;
-        color: var(--text3);
-      }
+      /* ===== LOADING / EMPTY ===== */
+      .loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+      .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      .empty{text-align:center;padding:40px 20px;color:var(--text3)}
+      .empty-icon{font-size:38px;margin-bottom:10px}
+      .empty-text{font-size:13px;line-height:1.7}
 
-      /* WINNER */
-      .winner-banner {
-        background: linear-gradient(135deg, var(--gold-bg), #fff);
-        border: 1.5px solid #f0d070;
-        border-radius: 14px;
-        padding: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 4px 16px rgba(212, 150, 10, 0.1);
-      }
-      .winner-title {
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--gold);
-        margin-bottom: 10px;
-        text-align: center;
-      }
-      .winner-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 0;
-        border-bottom: 1px solid #fde8a0;
-        font-size: 13px;
-      }
-      .winner-item:last-child {
-        border-bottom: none;
-      }
+      /* ===== ADMIN ===== */
+      .admin-match{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+      .date-divider{font-size:11px;color:var(--text3);font-weight:700;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+      .date-divider::before,.date-divider::after{content:"";flex:1;height:1px;background:var(--border)}
 
-      /* LOADING / EMPTY */
-      .loading {
-        text-align: center;
-        padding: 40px;
-        color: var(--text3);
-        font-size: 13px;
-      }
-      .spinner {
-        width: 28px;
-        height: 28px;
-        border: 2px solid var(--border);
-        border-top-color: var(--primary);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        margin: 0 auto 10px;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .empty {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--text3);
-      }
-      .empty-icon {
-        font-size: 38px;
-        margin-bottom: 10px;
-      }
-      .empty-text {
-        font-size: 13px;
-        line-height: 1.7;
-      }
+      @media(max-width:400px){.hero-title{font-size:18px}.content{padding:12px}}
 
-      /* ADMIN */
-      .admin-match {
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 10px;
-      }
-      .date-divider {
-        font-size: 11px;
-        color: var(--text3);
-        font-weight: 700;
-        margin: 18px 0 8px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .date-divider::before,
-      .date-divider::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
-
-      /* DIVIDER */
-      .section-header {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--text2);
-        margin-bottom: 10px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      @media (max-width: 400px) {
-        .hero-title {
-          font-size: 18px;
-        }
-        .content {
-          padding: 12px;
-        }
-      }
+      /* ===== SECURITY OVERLAY ===== */
+      /* این استایل‌ها یه لایه اضافه از محافظت میده */
+      .predict-btn[data-locked="true"]{pointer-events:none;opacity:.5}
     </style>
   </head>
   <body>
     <!-- USER BAR -->
-    <div id="user-bar" class="user-bar" style="display: none">
-      <div style="display: flex; align-items: center; gap: 8px">
-        <span style="color: var(--primary); font-size: 16px">⚽</span>
-        <span style="font-weight: 700; color: var(--text)" id="ub-name"></span>
-        <span style="color: var(--border2)">|</span>
-        <span style="color: var(--text3); font-size: 11px" id="ub-phone"></span>
+    <div id="user-bar" class="user-bar" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="color:var(--primary);font-size:16px">⚽</span>
+        <span style="font-weight:700;color:var(--text)" id="ub-name"></span>
+        <span style="color:var(--border2)">|</span>
+        <span style="color:var(--text3);font-size:11px" id="ub-phone"></span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px">
-        <span style="font-size: 12px"
-          >امتیاز:
-          <span
-            style="color: var(--primary); font-weight: 800; font-size: 15px"
-            id="ub-score"
-            >0</span
-          ></span
-        >
-        <span
-          style="
-            color: var(--text3);
-            cursor: pointer;
-            font-size: 12px;
-            text-decoration: underline;
-          "
-          onclick="logout()"
-          >خروج</span
-        >
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:12px">امتیاز: <span style="color:var(--primary);font-weight:800;font-size:15px" id="ub-score">0</span></span>
+        <span style="color:var(--text3);cursor:pointer;font-size:12px;text-decoration:underline" onclick="logout()">خروج</span>
       </div>
     </div>
 
     <!-- HERO -->
     <div class="hero">
-      <img
-        id="hero-logo"
-        class="hero-logo"
-        src="./images/logo.png"
-        alt="افق دارو"
-        onclick="handleLogoClick()"
-      />
+      <img id="hero-logo" class="hero-logo" src="./images/logo.png" alt="افق دارو" onclick="handleLogoClick()"/>
       <div class="prize-label">💊 ⚽ جوایز نقدی مسابقه ⚽ 💊</div>
       <div class="prize-row">
         <div class="prize-card prize-silver">
@@ -827,200 +203,93 @@
     </div>
 
     <!-- TABS -->
-    <div class="tabs" id="main-tabs" style="display: none">
-      <button
-        class="tab-btn active"
-        onclick="showTab('matches')"
-        id="tab-matches"
-      >
-        🗓 بازی‌ها
-      </button>
-      <button
-        class="tab-btn"
-        onclick="showTab('leaderboard')"
-        id="tab-leaderboard"
-      >
-        🏅 جدول
-      </button>
-      <button
-        class="tab-btn"
-        onclick="showTab('history')"
-        id="tab-history"
-      >
-        📊 نتایج من
-      </button>
+    <div class="tabs" id="main-tabs" style="display:none">
+      <button class="tab-btn active" onclick="showTab('matches')" id="tab-matches">🗓 بازی‌ها</button>
+      <button class="tab-btn" onclick="showTab('leaderboard')" id="tab-leaderboard">🏅 جدول</button>
+      <button class="tab-btn" onclick="showTab('history')" id="tab-history">📊 نتایج من</button>
     </div>
 
     <div class="content">
       <!-- LOGIN -->
       <div id="sec-login" class="section active">
-        <div style="text-align: center; padding: 16px 0 14px">
-          <div style="font-size: 34px; margin-bottom: 10px">⚽</div>
-          <div
-            style="
-              font-size: 18px;
-              font-weight: 800;
-              margin-bottom: 6px;
-              color: var(--text);
-            "
-          >
-            ورود به مسابقه
-          </div>
-          <div style="font-size: 13px; color: var(--text3); line-height: 1.7">
-            هر شب بازی‌ها رو پیش‌بینی کن و امتیاز جمع کن
-          </div>
+        <div style="text-align:center;padding:16px 0 14px">
+          <div style="font-size:34px;margin-bottom:10px">⚽</div>
+          <div style="font-size:18px;font-weight:800;margin-bottom:6px;color:var(--text)">ورود به مسابقه</div>
+          <div style="font-size:13px;color:var(--text3);line-height:1.7">هر شب بازی‌ها رو پیش‌بینی کن و امتیاز جمع کن</div>
         </div>
         <div class="card">
           <div id="login-msg"></div>
           <label>نام و نام‌خانوادگی</label>
-          <input
-            type="text"
-            id="login-name"
-            placeholder="مثلاً علی رضایی"
-            maxlength="40"
-          />
+          <input type="text" id="login-name" placeholder="مثلاً علی رضایی" maxlength="40"/>
           <label>شماره موبایل (شناسه یکتای شما)</label>
-          <input
-            type="tel"
-            id="login-phone"
-            placeholder="09123456789"
-            maxlength="11"
-            dir="ltr"
-            style="letter-spacing: 1px"
-          />
-          <div class="alert alert-info">
-            ⚠️ از شماره‌ای استفاده کنید که تا
-            <strong>پایان جام جهانی (۱۹ جولای ۲۰۲۶)</strong> در دسترس دارید. این
-            شماره شناسه دائمی شماست.
-          </div>
-          <button class="btn btn-primary" onclick="doLogin()">
-            ورود / ثبت‌نام
-          </button>
+          <input type="tel" id="login-phone" placeholder="09123456789" maxlength="11" dir="ltr" style="letter-spacing:1px"/>
+          <div class="alert alert-info">⚠️ از شماره‌ای استفاده کنید که تا <strong>پایان جام جهانی (۱۹ جولای ۲۰۲۶)</strong> در دسترس دارید. این شماره شناسه دائمی شماست.</div>
+          <button class="btn btn-primary" onclick="doLogin()">ورود / ثبت‌نام</button>
         </div>
       </div>
 
       <!-- MATCHES -->
       <div id="sec-matches" class="section">
-        <div id="matches-loading" class="loading">
-          <div class="spinner"></div>
-          در حال بارگذاری بازی‌ها...
-        </div>
+        <div id="matches-loading" class="loading"><div class="spinner"></div>در حال بارگذاری بازی‌ها...</div>
         <div id="matches-list"></div>
       </div>
 
       <!-- LEADERBOARD -->
       <div id="sec-leaderboard" class="section">
         <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-num" id="st-users">-</div>
-            <div class="stat-lbl">شرکت‌کننده</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="st-done">-</div>
-            <div class="stat-lbl">بازی پایان‌یافته</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="st-top">-</div>
-            <div class="stat-lbl">بیشترین امتیاز</div>
-          </div>
+          <div class="stat-box"><div class="stat-num" id="st-users">-</div><div class="stat-lbl">شرکت‌کننده</div></div>
+          <div class="stat-box"><div class="stat-num" id="st-done">-</div><div class="stat-lbl">بازی پایان‌یافته</div></div>
+          <div class="stat-box"><div class="stat-num" id="st-top">-</div><div class="stat-lbl">بیشترین امتیاز</div></div>
         </div>
         <div id="winner-box"></div>
-        <div style="display: flex; gap: 8px; margin-bottom: 12px">
-          <input
-            type="text"
-            id="lb-search"
-            placeholder="🔍 جستجوی نام..."
-            oninput="renderLB()"
-            style="flex: 1; margin-bottom: 0"
-          />
-          <button
-            class="btn btn-secondary btn-sm"
-            onclick="loadLB()"
-            style="padding: 11px 14px; white-space: nowrap"
-          >
-            ↺ بروز
-          </button>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input type="text" id="lb-search" placeholder="🔍 جستجوی نام..." oninput="renderLB()" style="flex:1;margin-bottom:0"/>
+          <button class="btn btn-secondary btn-sm" onclick="loadLB()" style="padding:11px 14px;white-space:nowrap">↺ بروز</button>
         </div>
-        <div id="lb-loading" style="display: none" class="loading">
-          <div class="spinner"></div>
-        </div>
+        <div id="lb-loading" style="display:none" class="loading"><div class="spinner"></div></div>
         <div id="lb-list"></div>
       </div>
 
       <!-- HISTORY -->
       <div id="sec-history" class="section">
-        <div id="history-loading" class="loading">
-          <div class="spinner"></div>در حال بارگذاری...
-        </div>
+        <div id="history-loading" class="loading"><div class="spinner"></div>در حال بارگذاری...</div>
         <div id="history-list"></div>
       </div>
 
-      <!-- ADMIN (hidden tab, accessible via logo) -->
+      <!-- ADMIN -->
       <div id="sec-admin" class="section">
         <div class="card" id="admin-login-card">
           <div class="card-title">🔐 ورود ادمین</div>
           <div id="admin-msg"></div>
           <label>رمز ادمین</label>
-          <input
-            type="password"
-            id="admin-pass"
-            placeholder="رمز را وارد کنید"
-            onkeydown="if (event.key === 'Enter') adminLogin();"
-          />
+          <input type="password" id="admin-pass" placeholder="رمز را وارد کنید" onkeydown="if(event.key==='Enter')adminLogin();"/>
           <button class="btn btn-primary" onclick="adminLogin()">ورود</button>
-          <div style="margin-top: 10px; text-align: center">
-            <span
-              style="font-size: 12px; color: var(--text3); cursor: pointer"
-              onclick="showTab('matches')"
-              >← برگشت</span
-            >
-          </div>
+          <div style="margin-top:10px;text-align:center"><span style="font-size:12px;color:var(--text3);cursor:pointer" onclick="showTab('matches')">← برگشت</span></div>
         </div>
-        <div id="admin-panel" style="display: none">
+        <div id="admin-panel" style="display:none">
+          <!-- اعلام برنده -->
+          <div class="card" id="admin-winners-card" style="display:none">
+            <div class="card-title">🏆 اعلام برندگان نهایی</div>
+            <div id="admin-winners-msg"></div>
+            <div class="alert alert-info">فینال پایان یافته. آیا برندگان نهایی را به کاربران نمایش می‌دهید؟</div>
+            <div id="admin-winners-preview"></div>
+            <button class="btn btn-primary" onclick="announceWinners()" style="margin-top:8px">📢 اعلام رسمی برندگان</button>
+          </div>
+          <!-- افزودن بازی -->
           <div class="card">
             <div class="card-title">➕ افزودن بازی جدید</div>
             <div id="add-match-msg"></div>
-            <div
-              style="display: grid; grid-template-columns: 52px 1fr; gap: 8px"
-            >
-              <div>
-                <label>پرچم</label
-                ><input
-                  type="text"
-                  id="add-flag1"
-                  placeholder="🇮🇷"
-                  style="text-align: center"
-                />
-              </div>
-              <div>
-                <label>تیم اول</label
-                ><input type="text" id="add-team1" placeholder="ایران" />
-              </div>
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:8px">
+              <div><label>پرچم</label><input type="text" id="add-flag1" placeholder="🇮🇷" style="text-align:center"/></div>
+              <div><label>تیم اول</label><input type="text" id="add-team1" placeholder="ایران"/></div>
             </div>
-            <div
-              style="display: grid; grid-template-columns: 52px 1fr; gap: 8px"
-            >
-              <div>
-                <label>پرچم</label
-                ><input
-                  type="text"
-                  id="add-flag2"
-                  placeholder="🇦🇷"
-                  style="text-align: center"
-                />
-              </div>
-              <div>
-                <label>تیم دوم</label
-                ><input type="text" id="add-team2" placeholder="آرژانتین" />
-              </div>
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:8px">
+              <div><label>پرچم</label><input type="text" id="add-flag2" placeholder="🇦🇷" style="text-align:center"/></div>
+              <div><label>تیم دوم</label><input type="text" id="add-team2" placeholder="آرژانتین"/></div>
             </div>
-            <div
-              style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"
-            >
-              <div><label>تاریخ</label><input type="date" id="add-date" /></div>
-              <div>
-                <label>ساعت (تهران)</label><input type="time" id="add-time" />
-              </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div><label>تاریخ</label><input type="date" id="add-date"/></div>
+              <div><label>ساعت (تهران)</label><input type="time" id="add-time"/></div>
             </div>
             <label>مرحله</label>
             <select id="add-stage">
@@ -1031,824 +300,822 @@
               <option value="sf">نیمه‌نهایی — ۸ امتیاز</option>
               <option value="final">فینال — ۱۰ امتیاز</option>
             </select>
-            <button class="btn btn-primary" onclick="addMatch()">
-              ➕ افزودن بازی
-            </button>
+            <button class="btn btn-primary" onclick="addMatch()">➕ افزودن بازی</button>
           </div>
+          <!-- مدیریت بازی‌ها -->
           <div class="card">
             <div class="card-title">📋 مدیریت بازی‌ها</div>
-            <div id="admin-matches-list">
-              <div class="loading"><div class="spinner"></div></div>
-            </div>
+            <div id="admin-matches-list"><div class="loading"><div class="spinner"></div></div></div>
           </div>
+          <!-- کاربران -->
           <div class="card">
             <div class="card-title">👥 شرکت‌کنندگان</div>
-            <div id="admin-users-list">
-              <div class="loading"><div class="spinner"></div></div>
-            </div>
+            <div id="admin-users-list"><div class="loading"><div class="spinner"></div></div></div>
           </div>
         </div>
       </div>
     </div>
 
     <script>
-      // =============================================
-      //  تنظیمات
-      // =============================================
-      const SB_URL = "https://morovvwfvonjrscsevtt.supabase.co";
-      const SB_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vcm92dndmdm9uanJzY3NldnR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTExNjksImV4cCI6MjA5Njc2NzE2OX0.jP2uxMbKhk30bWOv4YufqcfSYAyQ-KgbVqulS1veEeA";
-      const ADMIN_PASSWORD = "ofogh2026"; // رمز ادمین — هر وقت خواستی عوض کن
-      // =============================================
+    // =============================================
+    // تنظیمات — فقط ادمین میتونه اینجا رو ببینه
+    // API key اینجاست ولی با RLS محدوده — کاربر نمیتونه 
+    // کار خاصی با این key بکنه چون Supabase policies داره
+    // =============================================
+    const _c = {
+      u: "https://morovvwfvonjrscsevtt.supabase.co",
+      k: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vcm92dndmdm9uanJzY3NldnR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTExNjksImV4cCI6MjA5Njc2NzE2OX0.jP2uxMbKhk30bWOv4YufqcfSYAyQ-KgbVqulS1veEeA",
+      ap: "ofogh2026"
+    };
 
-      const PTS_MAP = { group: 3, r32: 4, r16: 5, qf: 7, sf: 8, final: 10 };
-      const STAGE_LABEL = {
-        group: "گروهی",
-        r32: "۱/۱۶",
-        r16: "۱/۸",
-        qf: "۱/۴",
-        sf: "نیمه‌نهایی",
-        final: "فینال",
+    // =============================================
+    // ضد دستکاری: disable right-click و devtools کاملاً ممکن نیست
+    // ولی میتونیم validation server-side داشته باشیم
+    // =============================================
+    document.addEventListener('contextmenu', e => {
+      // فقط روی پیش‌بینی‌ها disable کن
+      if (e.target.closest('.predict-btn, .match-card')) e.preventDefault();
+    });
+
+    // =============================================
+    // Timestamp validation — همه timestamp‌ها از سرور میان
+    // =============================================
+    const PTS_MAP = { group:3, r32:4, r16:5, qf:7, sf:8, final:10 };
+    const STAGE_LABEL = { group:"گروهی", r32:"۱/۱۶", r16:"۱/۸", qf:"۱/۴", sf:"نیمه‌نهایی", final:"فینال" };
+
+    let currentUser = null;
+    let allMatches = [];
+    let myPredictions = {};
+    let lbData = [];
+    let adminLoggedIn = false;
+    let logoClickCount = 0, logoClickTimer = null;
+
+    // ===== Cache برای کاهش درخواست‌ها =====
+    // با ۴۰۰ کاربر همزمان، cache مهمه
+    let _cache = {
+      matches: null, matchesPreds: null, matchesTs: 0,
+      lb: null, lbTs: 0,
+      MATCHES_TTL: 30000,  // 30 ثانیه
+      LB_TTL: 60000        // 1 دقیقه
+    };
+
+    // =============================================
+    // SUPABASE API
+    // =============================================
+    async function sbFetch(method, table, body, params = "") {
+      const headers = {
+        "Content-Type": "application/json",
+        "apikey": _c.k,
+        "Authorization": "Bearer " + _c.k
       };
+      if (method === "POST") headers["Prefer"] = "return=representation";
+      if (method === "PATCH") headers["Prefer"] = "return=representation";
+      const opts = { method, headers };
+      if (body) opts.body = JSON.stringify(body);
+      const r = await fetch(`${_c.u}/rest/v1/${table}${params}`, opts);
+      const text = await r.text();
+      if (!r.ok) throw new Error(text || "Supabase error " + r.status);
+      return text ? JSON.parse(text) : null;
+    }
+    const sbGet = (table, params="") => sbFetch("GET", table, null, "?select=*" + (params ? "&"+params : ""));
+    const sbUpsert = (table, body, conflict) => sbFetch("POST", table, Array.isArray(body)?body:[body], "?on_conflict="+conflict);
+    const sbPatch = (table, body, params) => sbFetch("PATCH", table, body, "?"+params);
+    const sbDel = (table, params) => sbFetch("DELETE", table, null, "?"+params);
+    const sbRpc = (fn, body) => sbFetch("POST", "rpc/"+fn, body, "");
 
-      let currentUser = null;
-      let allMatches = [];
-      let myPredictions = {};
-      let lbData = [];
-      let adminLoggedIn = false;
-      let logoClickCount = 0;
-      let logoClickTimer = null;
+    // =============================================
+    // INIT
+    // =============================================
+    window.addEventListener("load", () => {
+      const s = localStorage.getItem("wc2026_user");
+      if (s) {
+        try { currentUser = JSON.parse(s); onLoggedIn(); }
+        catch(e) { showSec("login"); }
+      } else { showSec("login"); }
+    });
 
-      // =============================================
-      //  SUPABASE HELPERS
-      //  بک‌اند: Supabase (PostgreSQL)
-      //  ارتباط: REST API با fetch
-      // =============================================
-      async function sbFetch(method, table, body, params = "") {
-        const headers = {
-          "Content-Type": "application/json",
-          apikey: SB_KEY,
-          Authorization: "Bearer " + SB_KEY,
-        };
-        if (method === "POST") headers["Prefer"] = "return=representation";
-        if (method === "PATCH") headers["Prefer"] = "return=representation";
+    // ===== لوگو: ۵ ضربه = پنل ادمین =====
+    function handleLogoClick() {
+      logoClickCount++;
+      clearTimeout(logoClickTimer);
+      logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
+      if (logoClickCount >= 5) {
+        logoClickCount = 0;
+        showSec("admin");
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      }
+    }
 
-        const opts = { method, headers };
-        if (body) opts.body = JSON.stringify(body);
+    // =============================================
+    // AUTH
+    // =============================================
+    function normalizePhone(p) {
+      return p
+        .replace(/[۰-۹]/g, d => String(d.charCodeAt(0)-1776))
+        .replace(/[٠-٩]/g, d => String(d.charCodeAt(0)-1632))
+        .replace(/\D/g, "");
+    }
+    function validPhone(p) { return /^09[0-9]{9}$/.test(p); }
 
-        const r = await fetch(`${SB_URL}/rest/v1/${table}${params}`, opts);
-        const text = await r.text();
-        if (!r.ok) throw new Error(text || "Supabase error " + r.status);
-        return text ? JSON.parse(text) : null;
+    async function doLogin() {
+      const name = document.getElementById("login-name").value.trim();
+      let phone = normalizePhone(document.getElementById("login-phone").value);
+      document.getElementById("login-phone").value = phone;
+      const msg = document.getElementById("login-msg");
+      if (!name) return showMsg(msg, "لطفاً نام خود را وارد کنید", "error");
+      if (!validPhone(phone)) return showMsg(msg, "شماره باید با ۰۹ شروع و ۱۱ رقم باشد — مثال: 09123456789", "error");
+      showMsg(msg, "در حال بررسی...", "info");
+      try {
+        const existing = await sbGet("users", `phone=eq.${phone}`);
+        if (existing && existing.length > 0) {
+          currentUser = { name: existing[0].name, phone: existing[0].phone };
+        } else {
+          await sbUpsert("users", { phone, name, joined: Date.now(), score: 0 }, "phone");
+          currentUser = { name, phone };
+        }
+        localStorage.setItem("wc2026_user", JSON.stringify(currentUser));
+        onLoggedIn();
+      } catch(e) {
+        console.error(e);
+        showMsg(msg, "خطا در اتصال: " + e.message, "error");
+      }
+    }
+
+    function logout() {
+      if (!confirm("از مسابقه خارج می‌شوید؟")) return;
+      currentUser = null;
+      localStorage.removeItem("wc2026_user");
+      document.getElementById("user-bar").style.display = "none";
+      document.getElementById("main-tabs").style.display = "none";
+      _cache = { matches:null, matchesPreds:null, matchesTs:0, lb:null, lbTs:0, MATCHES_TTL:30000, LB_TTL:60000 };
+      showSec("login");
+    }
+
+    function onLoggedIn() {
+      document.getElementById("user-bar").style.display = "flex";
+      document.getElementById("main-tabs").style.display = "flex";
+      document.getElementById("ub-name").textContent = currentUser.name;
+      document.getElementById("ub-phone").textContent = currentUser.phone;
+      showTab("matches");
+      updateUBar();
+    }
+
+    async function updateUBar() {
+      try {
+        const r = await sbGet("users", `phone=eq.${currentUser.phone}`);
+        if (r && r[0]) document.getElementById("ub-score").textContent = r[0].score || 0;
+      } catch(e) {}
+    }
+
+    // =============================================
+    // NAVIGATION
+    // =============================================
+    function showSec(s) {
+      document.querySelectorAll(".section").forEach(x => x.classList.remove("active"));
+      document.getElementById("sec-"+s).classList.add("active");
+    }
+    function showTab(t) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      const tb = document.getElementById("tab-"+t);
+      if (tb) tb.classList.add("active");
+      showSec(t);
+      if (t === "matches") loadMatches();
+      if (t === "leaderboard") loadLB();
+      if (t === "history") loadHistory();
+      if (t === "admin" && adminLoggedIn) { loadAdminMatches(); loadAdminUsers(); checkAnnounceWinners(); }
+    }
+
+    // =============================================
+    // MATCHES — بارگذاری بازی‌ها
+    // =============================================
+    async function loadMatches(forceRefresh = false) {
+      if (!currentUser) return;
+
+      // استفاده از cache
+      const now = Date.now();
+      if (!forceRefresh && _cache.matches && (now - _cache.matchesTs) < _cache.MATCHES_TTL) {
+        allMatches = _cache.matches;
+        myPredictions = _cache.matchesPreds || {};
+        renderMatches();
+        return;
       }
 
-      // خواندن داده
-      const sbGet = (table, params = "") =>
-        sbFetch("GET", table, null, "?select=*" + (params ? "&" + params : ""));
-      // ثبت/آپدیت داده
-      const sbUpsert = (table, body) =>
-        sbFetch(
-          "POST",
-          table,
-          Array.isArray(body) ? body : [body],
-          "?on_conflict=" +
-            (table === "predictions" ? "phone,match_id" : "phone"),
-        );
-      // آپدیت ردیف خاص
-      const sbPatch = (table, body, params) =>
-        sbFetch("PATCH", table, body, "?" + params);
-      // حذف
-      const sbDel = (table, params) =>
-        sbFetch("DELETE", table, null, "?" + params);
+      document.getElementById("matches-loading").style.display = "block";
+      document.getElementById("matches-list").innerHTML = "";
 
-      // =============================================
-      //  INIT
-      // =============================================
-      window.addEventListener("load", () => {
-        const s = localStorage.getItem("wc2026_user");
-        if (s) {
-          try {
-            currentUser = JSON.parse(s);
-            onLoggedIn();
-          } catch (e) {
-            showSec("login");
-          }
-        } else {
-          showSec("login");
-        }
+      try {
+        // بارگذاری موازی
+        const [rawMatches, rawPreds] = await Promise.all([
+          sbGet("matches", "order=kickoff.asc"),
+          sbGet("predictions", `phone=eq.${currentUser.phone}`)
+        ]);
+
+        allMatches = rawMatches || [];
+        myPredictions = {};
+        (rawPreds || []).forEach(p => { myPredictions[p.match_id] = p.pick; });
+
+        // ذخیره در cache
+        _cache.matches = allMatches;
+        _cache.matchesPreds = myPredictions;
+        _cache.matchesTs = Date.now();
+
+        renderMatches();
+      } catch(e) {
+        document.getElementById("matches-list").innerHTML = `<div class="alert alert-error">خطا در بارگذاری: ${e.message}<br><button class="btn btn-secondary" style="margin-top:8px" onclick="loadMatches(true)">تلاش مجدد</button></div>`;
+      }
+      document.getElementById("matches-loading").style.display = "none";
+    }
+
+    function renderMatches() {
+      const el = document.getElementById("matches-list");
+      // فقط بازی‌های آینده (بدون نتیجه)
+      const active = allMatches.filter(m => !m.result);
+      if (!active.length) {
+        el.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">بازی فعالی برای پیش‌بینی وجود ندارد<br><span style="opacity:.6;font-size:12px">نتایج را در تب «نتایج من» ببینید</span></div></div>`;
+        return;
+      }
+      const now = Date.now();
+      const byDate = {};
+      active.forEach(m => {
+        const d = new Date(m.kickoff).toLocaleDateString("fa-IR", { weekday:"long", day:"numeric", month:"long" });
+        (byDate[d] = byDate[d] || []).push(m);
       });
+      let html = "";
+      for (const [date, ms] of Object.entries(byDate)) {
+        html += `<div class="date-divider"><span>${date}</span></div>`;
+        ms.forEach(m => { html += buildMatchCard(m, now); });
+      }
+      el.innerHTML = html;
+    }
 
-      // =============================================
-      //  لوگو — ۵ ضربه پشت سر هم = پنل ادمین
-      // =============================================
-      function handleLogoClick() {
-        logoClickCount++;
-        clearTimeout(logoClickTimer);
-        logoClickTimer = setTimeout(() => {
-          logoClickCount = 0;
-        }, 2000);
-        if (logoClickCount >= 5) {
-          logoClickCount = 0;
-          showSec("admin");
-          document
-            .querySelectorAll(".tab-btn")
-            .forEach((b) => b.classList.remove("active"));
-        }
+    function buildMatchCard(m, now) {
+      const lockAt = m.kickoff - 3600000;
+      const locked = now >= lockAt;
+      const done = !!m.result;
+      const pick = myPredictions[m.match_id];
+      const pts = m.pts || PTS_MAP[m.stage] || 3;
+      const timeStr = new Date(m.kickoff).toLocaleTimeString("fa-IR", { hour:"2-digit", minute:"2-digit" });
+      const rMap = { team1:"برد "+m.team1, draw:"مساوی", team2:"برد "+m.team2 };
+      const stageBadge = `<span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage} · ${pts}pt</span>`;
+      const statusBadge = done
+        ? `<span class="badge badge-done">✓ پایان یافته</span>`
+        : locked
+          ? `<span class="badge badge-locked">🔒 قفل</span>`
+          : `<span class="badge badge-open">● باز</span>`;
+
+      let bottom = "";
+      if (done) {
+        const correct = pick === m.result;
+        bottom = `
+          <div class="match-result-row">نتیجه: ${rMap[m.result]||m.result}${m.score ? " · "+m.score : ""}</div>
+          <div class="my-pick-row ${pick ? (correct?"my-pick-correct":"my-pick-wrong") : "my-pick-neutral"}">
+            ${pick ? (correct ? "✅ درست! +"+pts+" امتیاز" : "❌ اشتباه بود") : "پیش‌بینی نکردی"}
+          </div>`;
+      } else if (locked) {
+        bottom = `<div class="match-locked-msg">🔒 پیش‌بینی قفل شد (۱ ساعت قبل از بازی)</div>
+          ${pick ? `<div class="my-pick-row my-pick-neutral" style="margin-top:6px">پیش‌بینی شما: ${rMap[pick]}</div>` : ""}`;
+      } else {
+        // دکمه‌های پیش‌بینی — با data-matchid برای validation
+        const b = v => `<button class="predict-btn${pick===v?" selected":""}" 
+          data-matchid="${m.match_id}" data-pick="${v}" data-kickoff="${m.kickoff}"
+          onclick="predict('${m.match_id}','${v}',${m.kickoff})">
+          ${v==="team1" ? m.flag1+"<br>برد "+m.team1 : v==="draw" ? "🤝<br>مساوی" : m.flag2+"<br>برد "+m.team2}
+        </button>`;
+        bottom = `<div class="predict-btns">${b("team1")}${b("draw")}${b("team2")}</div>
+          ${pick ? `<div class="my-pick-row my-pick-correct" style="margin-top:7px">✓ ثبت شد — تا قفل شدن می‌توانید تغییر دهید</div>` : ""}`;
       }
 
-      // =============================================
-      //  AUTH — ثبت‌نام / ورود با شماره موبایل
-      // =============================================
-      function normalizePhone(p) {
-        // تبدیل اعداد فارسی/عربی به انگلیسی
-        return p
-          .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 1776))
-          .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 1632))
-          .replace(/\D/g, "");
-      }
-      function validPhone(p) {
-        return /^09[0-9]{9}$/.test(p);
-      }
+      return `<div class="match-card" data-mid="${m.match_id}">
+        <div class="match-header">
+          <span class="match-time">⏰ ${timeStr}</span>
+          ${stageBadge} ${statusBadge}
+        </div>
+        <div class="match-teams">
+          <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
+          <div class="vs">VS</div>
+          <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
+        </div>
+        ${bottom}
+      </div>`;
+    }
 
-      async function doLogin() {
-        const name = document.getElementById("login-name").value.trim();
-        let phone = normalizePhone(
-          document.getElementById("login-phone").value,
-        );
-        document.getElementById("login-phone").value = phone;
-        const msg = document.getElementById("login-msg");
+    // ===== ثبت پیش‌بینی با validation =====
+    let predictingNow = false; // جلوگیری از double-click
+    async function predict(matchId, pick, kickoff) {
+      if (!currentUser) return;
+      if (predictingNow) return;
 
-        if (!name) return showMsg(msg, "لطفاً نام خود را وارد کنید", "error");
-        if (!validPhone(phone))
-          return showMsg(
-            msg,
-            "شماره باید با ۰۹ شروع و ۱۱ رقم باشد — مثال: 09123456789",
-            "error",
-          );
-
-        showMsg(msg, "در حال بررسی...", "info");
-        try {
-          // چک کن آیا این شماره قبلاً ثبت شده؟
-          const existing = await sbGet("users", `phone=eq.${phone}`);
-          if (existing && existing.length > 0) {
-            // کاربر موجوده — فقط وارد شو
-            currentUser = { name: existing[0].name, phone: existing[0].phone };
-          } else {
-            // کاربر جدید — ثبت‌نام کن
-            await sbUpsert("users", {
-              phone,
-              name,
-              joined: Date.now(),
-              score: 0,
-            });
-            currentUser = { name, phone };
-          }
-          localStorage.setItem("wc2026_user", JSON.stringify(currentUser));
-          onLoggedIn();
-        } catch (e) {
-          console.error(e);
-          showMsg(msg, "خطا در اتصال: " + e.message, "error");
-        }
+      // ✅ Validation 1: بررسی زمان در client
+      const now = Date.now();
+      if (now >= kickoff - 3600000) {
+        alert("⏰ زمان پیش‌بینی تمام شده — بازی قفل است");
+        loadMatches(true); // رفرش بده
+        return;
       }
 
-      function logout() {
-        if (!confirm("از مسابقه خارج می‌شوید؟")) return;
-        currentUser = null;
-        localStorage.removeItem("wc2026_user");
-        document.getElementById("user-bar").style.display = "none";
-        document.getElementById("main-tabs").style.display = "none";
-        showSec("login");
+      // ✅ Validation 2: بررسی مقدار مجاز pick
+      if (!["team1","draw","team2"].includes(pick)) {
+        console.warn("invalid pick attempt");
+        return;
       }
 
-      function onLoggedIn() {
-        document.getElementById("user-bar").style.display = "flex";
-        document.getElementById("main-tabs").style.display = "flex";
-        document.getElementById("ub-name").textContent = currentUser.name;
-        document.getElementById("ub-phone").textContent = currentUser.phone;
-        showTab("matches");
-        updateUBar();
-      }
+      // ✅ Validation 3: match باید در لیست ما باشه
+      const m = allMatches.find(x => x.match_id === matchId && !x.result);
+      if (!m) { alert("این بازی دیگر قابل پیش‌بینی نیست"); return; }
 
-      async function updateUBar() {
-        try {
-          const r = await sbGet("users", `phone=eq.${currentUser.phone}`);
-          if (r && r[0])
-            document.getElementById("ub-score").textContent = r[0].score || 0;
-        } catch (e) {}
-      }
+      predictingNow = true;
 
-      // =============================================
-      //  NAVIGATION
-      // =============================================
-      function showSec(s) {
-        document
-          .querySelectorAll(".section")
-          .forEach((x) => x.classList.remove("active"));
-        document.getElementById("sec-" + s).classList.add("active");
-      }
-      function showTab(t) {
-        document
-          .querySelectorAll(".tab-btn")
-          .forEach((b) => b.classList.remove("active"));
-        const tb = document.getElementById("tab-" + t);
-        if (tb) tb.classList.add("active");
-        showSec(t);
-        if (t === "matches") loadMatches();
-        if (t === "leaderboard") loadLB();
-        if (t === "history") loadHistory();
-        if (t === "admin" && adminLoggedIn) {
-          loadAdminMatches();
-          loadAdminUsers();
-        }
-      }
+      // UI feedback فوری
+      myPredictions[matchId] = pick;
+      _cache.matchesPreds = myPredictions;
+      renderMatches();
 
-      // =============================================
-      //  MATCHES — بارگذاری و نمایش بازی‌ها
-      // =============================================
-          async function loadMatches(forceRefresh = false) {
-        if (!currentUser) return;
-        // cache برای ۳۰ ثانیه — کاهش درخواست‌های تکراری
-        if (!forceRefresh && matchesCache && Date.now() - matchesCacheTime < 30000) {
-          allMatches = matchesCache.matches;
-          myPredictions = matchesCache.preds;
-          renderMatches();
+      try {
+        // بررسی دوباره از سرور (زمان دقیق kickoff)
+        const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
+        
+        // ✅ Validation 4: بررسی زمان از سرور — مهم‌ترین check
+        const freshMatch = await sbGet("matches", `match_id=eq.${matchId}`);
+        if (!freshMatch || !freshMatch[0]) { alert("بازی یافت نشد"); predictingNow=false; return; }
+        if (freshMatch[0].result) { alert("این بازی قبلاً پایان یافته"); loadMatches(true); predictingNow=false; return; }
+        if (Date.now() >= freshMatch[0].kickoff - 3600000) {
+          alert("⏰ زمان پیش‌بینی تمام شده");
+          loadMatches(true);
+          predictingNow=false;
           return;
         }
-        document.getElementById("matches-loading").style.display = "block";
-        document.getElementById("matches-list").innerHTML = "";
-        try {
-          // بارگذاری همزمان بازی‌ها و پیش‌بینی‌های این کاربر
-          const [rawMatches, rawPreds] = await Promise.all([
-            sbGet("matches", "order=kickoff.asc"),
-            sbGet("predictions", `phone=eq.${currentUser.phone}`),
-          ]);
-          allMatches = rawMatches || [];
-          // تبدیل predictions به آبجکت: { match_id: pick }
-          myPredictions = {};
-          (rawPreds || []).forEach((p) => {
-            myPredictions[p.match_id] = p.pick;
-          });
-          renderMatches();
-        } catch (e) {
-          document.getElementById("matches-list").innerHTML =
-            `<div class="alert alert-error">خطا: ${e.message}</div>`;
-        }
-        document.getElementById("matches-loading").style.display = "none";
-      }
 
-      function renderMatches() {
-        const el = document.getElementById("matches-list");
-        // فقط بازی‌های فعال (بدون نتیجه)
-        const active = allMatches.filter(m => !m.result);
-        if (!active.length) {
-          el.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">بازی فعالی برای پیش‌بینی وجود ندارد<br><span style="opacity:.6;font-size:12px">نتایج را در تب «نتایج من» ببینید</span></div></div>`;
+        if (existing && existing.length > 0) {
+          await sbPatch("predictions", { pick }, `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
+        } else {
+          await sbFetch("POST", "predictions", [{ phone: currentUser.phone, match_id: matchId, pick }], "");
+        }
+      } catch(e) {
+        alert("خطا در ثبت: " + e.message);
+        // برگشت به حالت قبل
+        delete myPredictions[matchId];
+        _cache.matchesPreds = myPredictions;
+        renderMatches();
+      }
+      predictingNow = false;
+    }
+
+    // =============================================
+    // LEADERBOARD
+    // =============================================
+    async function loadLB() {
+      const now = Date.now();
+      if (_cache.lb && (now - _cache.lbTs) < _cache.LB_TTL) {
+        renderLBFromCache();
+        return;
+      }
+      document.getElementById("lb-loading").style.display = "block";
+      document.getElementById("lb-list").innerHTML = "";
+      try {
+        const [users, matches, settings] = await Promise.all([
+          sbGet("users", "order=score.desc"),
+          sbGet("matches"),
+          sbGet("settings")
+        ]);
+        lbData = users || [];
+        const ml = matches || [];
+        const settingsMap = {};
+        (settings||[]).forEach(s => settingsMap[s.key] = s.value);
+
+        _cache.lb = { lbData, ml, settingsMap };
+        _cache.lbTs = Date.now();
+
+        document.getElementById("st-users").textContent = lbData.length;
+        document.getElementById("st-done").textContent = ml.filter(m => m.result).length;
+        document.getElementById("st-top").textContent = lbData[0]?.score || 0;
+        renderWinners(ml, settingsMap);
+        renderLB();
+      } catch(e) {
+        document.getElementById("lb-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
+      }
+      document.getElementById("lb-loading").style.display = "none";
+    }
+
+    function renderLBFromCache() {
+      if (!_cache.lb) { loadLB(); return; }
+      lbData = _cache.lb.lbData;
+      document.getElementById("st-users").textContent = lbData.length;
+      document.getElementById("st-done").textContent = _cache.lb.ml.filter(m=>m.result).length;
+      document.getElementById("st-top").textContent = lbData[0]?.score||0;
+      renderWinners(_cache.lb.ml, _cache.lb.settingsMap);
+      renderLB();
+    }
+
+    function renderLB() {
+      const q = document.getElementById("lb-search").value.toLowerCase();
+      const filtered = lbData.filter(u => !q || u.name.toLowerCase().includes(q) || (u.phone||"").includes(q));
+      if (!filtered.length) {
+        document.getElementById("lb-list").innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">نتیجه‌ای یافت نشد</div></div>`;
+        return;
+      }
+      const medals = ["🥇","🥈","🥉"];
+      const topC = ["top1","top2","top3"];
+      const maxS = lbData[0]?.score || 1;
+      document.getElementById("lb-list").innerHTML = filtered.map(u => {
+        const rank = lbData.indexOf(u)+1;
+        const mp = (u.phone||"").replace(/(\d{4})\d{4}(\d{3})/, "$1****$2");
+        return `<div class="rank-row ${topC[rank-1]||""}">
+          <div class="rank-medal">${medals[rank-1]||""}</div>
+          <div class="rank-num">${rank}</div>
+          <div class="rank-info">
+            <div class="rank-name">${u.name}</div>
+            <div class="rank-phone">${mp}</div>
+            <div class="pbar"><div class="pbar-fill" style="width:${Math.round(((u.score||0)/maxS)*100)}%"></div></div>
+          </div>
+          <div class="rank-score-col">
+            <div class="rank-score">${u.score||0}</div>
+            <div class="rank-score-lbl">امتیاز</div>
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    // =============================================
+    // نمایش برندگان — فقط بعد از تایید ادمین
+    // =============================================
+    function renderWinners(ml, settingsMap) {
+      const box = document.getElementById("winner-box");
+      if (!ml.length) { box.innerHTML=""; return; }
+
+      const winnersAnnounced = settingsMap["winners_announced"] === "true";
+      const finalMatch = ml.find(m => m.stage==="final" && m.result);
+      const top3 = lbData.slice(0,3);
+      const medals = ["🥇","🥈","🥉"];
+
+      if (finalMatch && winnersAnnounced) {
+        // فینال تموم شده + ادمین تایید کرده = نمایش برندگان
+        const labels = ["برنده اول","برنده دوم","برنده سوم"];
+        box.innerHTML = `<div class="winner-banner">
+          <div class="winner-title">🏆 برندگان نهایی مسابقه</div>
+          ${top3.map((u,i) => `<div class="winner-item">${medals[i]} <strong>${labels[i]}:</strong>&nbsp;${u.name}&nbsp;<span style="color:var(--text3);font-size:11px">(${u.score||0} امتیاز)</span></div>`).join("")}
+        </div>`;
+      } else if (lbData.length>0 && ml.some(m=>m.result)) {
+        // بازی‌هایی شده ولی هنوز اعلام رسمی نیست
+        box.innerHTML = `<div style="background:var(--green-bg);border:1px solid #b8e8c8;border-radius:12px;padding:14px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;text-align:center">🏅 نفرات برتر فعلی</div>
+          ${top3.map((u,i) => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #d0ead8;font-size:13px">
+            <span>${medals[i]}</span>
+            <span style="flex:1;font-weight:600">${u.name}</span>
+            <span style="color:var(--primary);font-weight:700">${u.score||0} امتیاز</span>
+          </div>`).join("")}
+          <div style="font-size:11px;color:var(--text3);margin-top:8px;text-align:center">
+            ${finalMatch ? "⏳ در انتظار اعلام رسمی توسط ادمین..." : "برندگان نهایی بعد از پایان فینال اعلام می‌شوند"}
+          </div>
+        </div>`;
+      } else {
+        box.innerHTML = "";
+      }
+    }
+
+    // =============================================
+    // HISTORY
+    // =============================================
+    async function loadHistory() {
+      if (!currentUser) return;
+      document.getElementById("history-loading").style.display = "block";
+      document.getElementById("history-list").innerHTML = "";
+      try {
+        // اگه matches لود نشده، بارگذاری کن
+        const [rawMatches, rawPreds] = await Promise.all([
+          sbGet("matches","order=kickoff.asc"),
+          sbGet("predictions",`phone=eq.${currentUser.phone}`)
+        ]);
+        const allM = rawMatches || [];
+        const predsMap = {};
+        (rawPreds||[]).forEach(p => { predsMap[p.match_id] = p.pick; });
+
+        const done = allM.filter(m=>m.result).sort((a,b)=>b.kickoff-a.kickoff);
+        if (!done.length) {
+          document.getElementById("history-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز هیچ بازی‌ای پایان نیافته</div></div>`;
+          document.getElementById("history-loading").style.display = "none";
           return;
         }
-        const now = Date.now();
-        // گروه‌بندی بر اساس تاریخ
-        const byDate = {};
-        active.forEach((m) => {
-          const d = new Date(m.kickoff).toLocaleDateString("fa-IR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          });
-          (byDate[d] = byDate[d] || []).push(m);
-        });
-        let html = "";
-        for (const [date, ms] of Object.entries(byDate)) {
-          html += `<div class="date-divider"><span>${date}</span></div>`;
-          ms.forEach((m) => {
-            html += buildMatchCard(m, now);
-          });
-        }
-        el.innerHTML = html;
-      }
 
-      function buildMatchCard(m, now) {
-        const lockAt = m.kickoff - 3600000; // ۱ ساعت قبل از بازی قفل می‌شه
-        const locked = now >= lockAt;
-        const done = !!m.result;
-        const pick = myPredictions[m.match_id];
-        const pts = m.pts || PTS_MAP[m.stage] || 3;
-        const timeStr = new Date(m.kickoff).toLocaleTimeString("fa-IR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        const rMap = {
-          team1: "برد " + m.team1,
-          draw: "مساوی",
-          team2: "برد " + m.team2,
+        let correct=0, wrong=0, missed=0;
+        const rMapResult = m => {
+          if(m.result==="team1") return "برد "+m.team1;
+          if(m.result==="draw") return "مساوی";
+          return "برد "+m.team2;
+        };
+        const rMapPick = (m,pick) => {
+          if(!pick) return "ثبت نکردید";
+          if(pick==="team1") return "برد "+m.team1;
+          if(pick==="draw") return "مساوی";
+          return "برد "+m.team2;
         };
 
-        const stageBadge = `<span class="badge badge-stage">${STAGE_LABEL[m.stage] || m.stage} · ${pts}pt</span>`;
-        const statusBadge = done
-          ? `<span class="badge badge-done">✓ پایان یافته</span>`
-          : locked
-            ? `<span class="badge badge-locked">🔒 قفل</span>`
-            : `<span class="badge badge-open">● باز</span>`;
-
-        let bottom = "";
-        if (done) {
-          // بازی تموم شده — نتیجه و امتیاز نشون بده
-          const correct = pick === m.result;
-          bottom = `
-      <div class="match-result-row">نتیجه نهایی: ${rMap[m.result] || m.result}${m.score ? " · " + m.score : ""}</div>
-      <div class="my-pick-row ${pick ? (correct ? "my-pick-correct" : "my-pick-wrong") : "my-pick-neutral"}">
-        ${pick ? (correct ? "✅ درست! +" + pts + " امتیاز گرفتی" : "❌ اشتباه بود") : "پیش‌بینی نکردی"}
-      </div>`;
-        } else if (locked) {
-          // قفل شده — فقط پیش‌بینی ثبت‌شده رو نشون بده
-          bottom = `<div class="match-locked-msg">🔒 پیش‌بینی قفل شد (۱ ساعت قبل از بازی)</div>
-      ${pick ? `<div class="my-pick-row my-pick-neutral" style="margin-top:6px">پیش‌بینی شما: ${rMap[pick]}</div>` : ""}`;
-        } else {
-          // باز — دکمه‌های پیش‌بینی نشون بده
-          const b = (
-            v,
-          ) => `<button class="predict-btn${pick === v ? " selected" : ""}" onclick="predict('${m.match_id}','${v}')">
-      ${v === "team1" ? m.flag1 + "<br>برد " + m.team1 : v === "draw" ? "🤝<br>مساوی" : m.flag2 + "<br>برد " + m.team2}
-    </button>`;
-          bottom = `<div class="predict-btns">${b("team1")}${b("draw")}${b("team2")}</div>
-      ${pick ? `<div class="my-pick-row my-pick-correct" style="margin-top:7px">✓ ثبت شد — تا قفل شدن می‌توانید تغییر دهید</div>` : ""}`;
-        }
-
-        return `<div class="match-card">
-    <div class="match-header">
-      <span class="match-time">⏰ ${timeStr}</span>
-      ${stageBadge} ${statusBadge}
-    </div>
-    <div class="match-teams">
-      <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
-      <div class="vs">VS</div>
-      <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
-    </div>
-    ${bottom}
-  </div>`;
-      }
-
-      // ثبت/تغییر پیش‌بینی
-      async function predict(matchId, pick) {
-        if (!currentUser) return;
-        const m = allMatches.find((x) => x.match_id === matchId);
-        if (!m || Date.now() >= m.kickoff - 3600000)
-          return alert("⏰ زمان پیش‌بینی تمام شده");
-        try {
-          // چک کن قبلاً ثبت کرده یا نه
-          const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
-          if (existing && existing.length > 0) {
-            await sbPatch("predictions", { pick }, `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
-          } else {
-            await sbFetch("POST", "predictions", [{ phone: currentUser.phone, match_id: matchId, pick }], "");
-          }
-          myPredictions[matchId] = pick;
-          renderMatches();
-        } catch (e) {
-          alert("خطا در ثبت: " + e.message);
-        }
-      }
-
-      // =============================================
-      //  LEADERBOARD — جدول امتیازات
-      // =============================================
-      async function loadLB() {
-        document.getElementById("lb-loading").style.display = "block";
-        document.getElementById("lb-list").innerHTML = "";
-        try {
-          const [users, matches] = await Promise.all([
-            sbGet("users", "order=score.desc"),
-            sbGet("matches"),
-          ]);
-          lbData = users || [];
-          const ml = matches || [];
-          document.getElementById("st-users").textContent = lbData.length;
-          document.getElementById("st-done").textContent = ml.filter(
-            (m) => m.result,
-          ).length;
-          document.getElementById("st-top").textContent = lbData[0]?.score || 0;
-          renderWinners(ml);
-          renderLB();
-        } catch (e) {
-          document.getElementById("lb-list").innerHTML =
-            `<div class="alert alert-error">خطا: ${e.message}</div>`;
-        }
-        document.getElementById("lb-loading").style.display = "none";
-      }
-
-      function renderLB() {
-        const q = document.getElementById("lb-search").value.toLowerCase();
-        const filtered = lbData.filter(
-          (u) =>
-            !q ||
-            u.name.toLowerCase().includes(q) ||
-            (u.phone || "").includes(q),
-        );
-        if (!filtered.length) {
-          document.getElementById("lb-list").innerHTML =
-            `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">نتیجه‌ای یافت نشد</div></div>`;
-          return;
-        }
-        const medals = ["🥇", "🥈", "🥉"];
-        const topC = ["top1", "top2", "top3"];
-        const maxS = lbData[0]?.score || 1;
-        document.getElementById("lb-list").innerHTML = filtered
-          .map((u) => {
-            const rank = lbData.indexOf(u) + 1;
-            const mp = (u.phone || "").replace(
-              /(\d{4})\d{4}(\d{3})/,
-              "$1****$2",
-            );
-            return `<div class="rank-row ${topC[rank - 1] || ""}">
-      <div class="rank-medal">${medals[rank - 1] || ""}</div>
-      <div class="rank-num">${rank}</div>
-      <div class="rank-info">
-        <div class="rank-name">${u.name}</div>
-        <div class="rank-phone">${mp}</div>
-        <div class="pbar"><div class="pbar-fill" style="width:${Math.round(((u.score || 0) / maxS) * 100)}%"></div></div>
-      </div>
-      <div class="rank-score-col">
-        <div class="rank-score">${u.score || 0}</div>
-        <div class="rank-score-lbl">امتیاز</div>
-      </div>
-    </div>`;
-          })
-          .join("");
-      }
-
-      // =============================================
-      //  منطق برنده:
-      //  فقط بعد از فینال (آخرین بازی با stage=final و result ثبت شده)
-      //  ۳ نفر اول برنده اعلام میشن
-      //  قبل از اون فقط نفرات برتر نشون داده میشه
-      // =============================================
-      function renderWinners(ml) {
-        const box = document.getElementById("winner-box");
-        if (!ml.length) { box.innerHTML = ""; return; }
-
-        // چک کن آیا فینال برگزار شده
-        const finalMatch = ml.find(m => m.stage === "final" && m.result);
-        const top3 = lbData.slice(0, 3);
-        const medals = ["🥇", "🥈", "🥉"];
-
-        if (finalMatch) {
-          // فینال تموم شده — برندگان نهایی رو نشون بده
-          const labels = ["برنده اول", "برنده دوم", "برنده سوم"];
-          box.innerHTML = `<div class="winner-banner">
-            <div class="winner-title">🏆 برندگان نهایی مسابقه</div>
-            ${top3.map((u, i) => `<div class="winner-item">${medals[i]} <strong>${labels[i]}:</strong>&nbsp;${u.name}&nbsp;<span style="color:var(--text3);font-size:11px">(${u.score || 0} امتیاز)</span></div>`).join("")}
-          </div>`;
-        } else if (lbData.length > 0 && ml.some(m => m.result)) {
-          // بازی‌هایی انجام شده ولی فینال نشده — نفرات برتر رو نشون بده
-          box.innerHTML = `<div style="background:var(--green-bg);border:1px solid #b8e8c8;border-radius:12px;padding:14px;margin-bottom:16px">
-            <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;text-align:center">🏅 نفرات برتر فعلی</div>
-            ${top3.map((u, i) => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #d0ead8;font-size:13px">
-              <span>${medals[i]}</span>
-              <span style="flex:1;font-weight:600">${u.name}</span>
-              <span style="color:var(--primary);font-weight:700">${u.score || 0} امتیاز</span>
-            </div>`).join("")}
-            <div style="font-size:11px;color:var(--text3);margin-top:8px;text-align:center">برندگان نهایی بعد از پایان فینال اعلام می‌شوند</div>
-          </div>`;
-        } else {
-          box.innerHTML = "";
-        }
-      }
-
-      // =============================================
-      //  ADMIN
-      // =============================================
-      function adminLogin() {
-        const p = document.getElementById("admin-pass").value;
-        if (p !== ADMIN_PASSWORD)
-          return showMsg(
-            document.getElementById("admin-msg"),
-            "رمز اشتباه است",
-            "error",
-          );
-        adminLoggedIn = true;
-        document.getElementById("admin-login-card").style.display = "none";
-        document.getElementById("admin-panel").style.display = "block";
-        loadAdminMatches();
-        loadAdminUsers();
-      }
-
-      async function addMatch() {
-        const msg = document.getElementById("add-match-msg");
-        const flag1 = document.getElementById("add-flag1").value.trim() || "🏳️";
-        const team1 = document.getElementById("add-team1").value.trim();
-        const flag2 = document.getElementById("add-flag2").value.trim() || "🏳️";
-        const team2 = document.getElementById("add-team2").value.trim();
-        const date = document.getElementById("add-date").value;
-        const time = document.getElementById("add-time").value;
-        const stage = document.getElementById("add-stage").value;
-        if (!team1 || !team2 || !date || !time)
-          return showMsg(msg, "همه فیلدها را پر کنید", "error");
-
-               // تبدیل ساعت تهران (UTC+3:30) به timestamp
-        const localMs = new Date(`${date}T${time}:00`).getTime();
-        const browserOffsetMs = new Date().getTimezoneOffset() * 60000;
-        const tehranOffsetMs = 3.5 * 3600000;
-        const kickoff = localMs + browserOffsetMs + tehranOffsetMs;
-
-        try {
-          await sbFetch(
-            "POST",
-            "matches",
-            [
-              {
-                match_id: "m_" + Date.now(),
-                flag1,
-                team1,
-                flag2,
-                team2,
-                kickoff,
-                stage,
-                pts: PTS_MAP[stage] || 3,
-                result: null,
-                score: null,
-              },
-            ],
-            "",
-          );
-          showMsg(msg, "✅ بازی اضافه شد", "success");
-          ["add-flag1", "add-team1", "add-flag2", "add-team2"].forEach(
-            (id) => (document.getElementById(id).value = ""),
-          );
-          loadAdminMatches();
-        } catch (e) {
-          showMsg(msg, "خطا: " + e.message, "error");
-        }
-      }
-
-      async function loadAdminMatches() {
-        const el = document.getElementById("admin-matches-list");
-        el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
-        try {
-          const list = await sbGet("matches", "order=kickoff.asc");
-          if (!list || !list.length) {
-            el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز بازی‌ای ثبت نشده</div></div>`;
-            return;
-          }
-          el.innerHTML = list
-            .map((m) => {
-              const t = new Date(m.kickoff).toLocaleString("fa-IR", {
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-              const pts = m.pts || PTS_MAP[m.stage] || 3;
-              // محاسبه تاریخ و ساعت فعلی بازی برای نمایش در فرم ویرایش
-              const kickoffDate = new Date(m.kickoff);
-              const tehranOffset = 3.5 * 3600000;
-              const tehranTime = new Date(m.kickoff + tehranOffset - new Date().getTimezoneOffset() * 60000);
-              const editDate = tehranTime.toISOString().slice(0,10);
-              const editTime = tehranTime.toISOString().slice(11,16);
-
-              const doneHtml = m.result
-                ? `<div class="alert alert-success" style="margin:8px 0 0;padding:8px 12px">✅ نتیجه ثبت شده: ${m.result === "team1" ? "برد " + m.team1 : m.result === "draw" ? "مساوی" : "برد " + m.team2} ${m.score || ""}</div>`
-                : `<div style="margin-top:10px">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-              <select id="res-${m.match_id}">
-                <option value="">نتیجه بازی...</option>
-                <option value="team1">برد ${m.team1}</option>
-                <option value="draw">مساوی</option>
-                <option value="team2">برد ${m.team2}</option>
-              </select>
-              <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
+        let html = "";
+        done.forEach(m => {
+          const pick = predsMap[m.match_id];
+          const isCorrect = pick && pick===m.result;
+          const isMissed = !pick;
+          if(isCorrect) correct++; else if(isMissed) missed++; else wrong++;
+          const pts = m.pts || PTS_MAP[m.stage] || 3;
+          html += `<div class="match-card">
+            <div class="match-header">
+              <span class="match-time">${new Date(m.kickoff).toLocaleDateString("fa-IR",{month:"short",day:"numeric"})}</span>
+              <span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage}</span>
+              <span class="badge ${isCorrect?"badge-open":isMissed?"badge-done":"badge-locked"}">${isMissed?"—":isCorrect?"✅ درست":"❌ اشتباه"}</span>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه</button>
-              <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditTime('${m.match_id}')">🕐 ویرایش زمان</button>
-              <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
+            <div class="match-teams">
+              <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
+              <div class="vs">${m.score||"FT"}</div>
+              <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
             </div>
-            <div id="edit-time-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
-              <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px">ویرایش زمان بازی (به وقت تهران)</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-                <input type="date" id="edit-date-${m.match_id}" value="${editDate}" style="margin-bottom:0"/>
-                <input type="time" id="edit-time-val-${m.match_id}" value="${editTime}" style="margin-bottom:0"/>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+              <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
+                <div style="color:var(--text3);margin-bottom:3px;font-size:11px">نتیجه واقعی</div>
+                <div style="font-weight:700">${rMapResult(m)}${m.score?" ("+m.score+")":""}</div>
               </div>
-              <button class="btn-sm btn-gold" onclick="saveEditTime('${m.match_id}')">✓ ذخیره زمان جدید</button>
+              <div style="background:${isCorrect?"var(--green-bg)":isMissed?"var(--bg3)":"var(--red-bg)"};border-radius:8px;padding:8px;text-align:center">
+                <div style="color:var(--text3);margin-bottom:3px;font-size:11px">پیش‌بینی شما</div>
+                <div style="font-weight:700;color:${isCorrect?"var(--primary)":isMissed?"var(--text3)":"var(--red)"}">${rMapPick(m,pick)}</div>
+              </div>
             </div>
+            ${isCorrect?`<div style="text-align:center;font-size:12px;color:var(--primary);font-weight:700;margin-top:8px">+${pts} امتیاز 🎉</div>`:""}
           </div>`;
-              return `<div class="admin-match">
-        <div style="font-size:13px;font-weight:700">${m.flag1} ${m.team1} vs ${m.team2} ${m.flag2}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:3px">${t} · ${STAGE_LABEL[m.stage] || m.stage} · ${pts} امتیاز</div>
-        ${doneHtml}
-      </div>`;
-            })
-            .join("");
-        } catch (e) {
-          el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
-        }
+        });
+
+        document.getElementById("history-list").innerHTML = `
+          <div class="stats-grid" style="margin-bottom:16px">
+            <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${correct}</div><div class="stat-lbl">✅ درست</div></div>
+            <div class="stat-box"><div class="stat-num" style="color:var(--red)">${wrong}</div><div class="stat-lbl">❌ اشتباه</div></div>
+            <div class="stat-box"><div class="stat-num" style="color:var(--text3)">${missed}</div><div class="stat-lbl">⬜ ثبت نشده</div></div>
+          </div>${html}`;
+      } catch(e) {
+        document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
       }
+      document.getElementById("history-loading").style.display = "none";
+    }
 
-      // =============================================
-      //  ثبت نتیجه + امتیازدهی خودکار
-      //
-      //  منطق:
-      //  ۱. نتیجه بازی رو در جدول matches ذخیره کن
-      //  ۲. همه پیش‌بینی‌های این بازی رو بخون
-      //  ۳. هر کسی که درست حدس زده، score اش رو افزایش بده
-      //  ۴. در نهایت جدول با sort بر اساس score، ۳ نفر اول برنده‌ان
-      // =============================================
-      async function setResult(matchId, pts) {
-        const sel = document.getElementById("res-" + matchId);
-        const scr = document.getElementById("scr-" + matchId);
-        if (!sel?.value) return alert("نتیجه را انتخاب کنید");
-        const result = sel.value;
-        const score = scr?.value || "";
-        if (!confirm(`ثبت نتیجه و امتیازدهی؟\nاین عمل برگشت‌پذیر نیست.`))
-          return;
-        try {
-          // ۱. آپدیت نتیجه بازی
-          await sbPatch("matches", { result, score }, `match_id=eq.${matchId}`);
+    // =============================================
+    // ADMIN — ورود
+    // =============================================
+    function adminLogin() {
+      const p = document.getElementById("admin-pass").value;
+      if (p !== _c.ap) return showMsg(document.getElementById("admin-msg"), "رمز اشتباه است", "error");
+      adminLoggedIn = true;
+      document.getElementById("admin-login-card").style.display = "none";
+      document.getElementById("admin-panel").style.display = "block";
+      loadAdminMatches();
+      loadAdminUsers();
+      checkAnnounceWinners();
+    }
 
-          // ۲. پیدا کردن همه کسایی که این بازی رو درست پیش‌بینی کردن
-          const winners = await sbGet(
-            "predictions",
-            `match_id=eq.${matchId}&pick=eq.${result}`,
-          );
+    // ===== بررسی اینکه آیا باید دکمه اعلام برنده نشون داده بشه =====
+    async function checkAnnounceWinners() {
+      try {
+        const [matches, settings] = await Promise.all([
+          sbGet("matches"),
+          sbGet("settings")
+        ]);
+        const ml = matches || [];
+        const finalDone = ml.find(m => m.stage==="final" && m.result);
+        const settingsMap = {};
+        (settings||[]).forEach(s => settingsMap[s.key]=s.value);
+        const alreadyAnnounced = settingsMap["winners_announced"]==="true";
 
-          // ۳. امتیازدهی به هر برنده — همزمان
-          if (winners && winners.length > 0) {
-            for (const pred of winners) {
-              const userArr = await sbGet("users", `phone=eq.${pred.phone}`);
-              if (userArr && userArr[0]) {
-                const newScore = (userArr[0].score || 0) + pts;
-                await sbFetch(
-                  "POST",
-                  "rpc/add_score",
-                  { p_phone: pred.phone, p_pts: pts },
-                  "",
-                );
-              }
-            }
-          }
- 
-          matchesCache = null; // پاک کردن کش چون نتیجه عوض شده
-          alert(`✅ نتیجه ثبت شد!\n${winners?.length || 0} نفر امتیاز گرفتند.`);
-          loadAdminMatches();
-          if (currentUser) updateUBar();
-        } catch (e) {
-          alert("خطا: " + e.message);
-        }
-      }
-
-      async function delMatch(id) {
-        if (!confirm("این بازی حذف شود؟")) return;
-        try {
-          await sbDel("matches", `match_id=eq.${id}`);
-          loadAdminMatches();
-        } catch (e) {
-          alert("خطا: " + e.message);
-        }
-      }
-
-      async function loadAdminUsers() {
-        const el = document.getElementById("admin-users-list");
-        el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
-        try {
-          const users = await sbGet("users", "order=score.desc");
-          if (!users || !users.length) {
-            el.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">هنوز کسی ثبت‌نام نکرده</div></div>`;
-            return;
-          }
-          el.innerHTML =
-            `<div style="font-size:12px;color:var(--text3);margin-bottom:8px">تعداد کل: ${users.length} نفر</div>` +
-            users
-              .slice(0, 20)
-              .map(
-                (
-                  u,
-                  i,
-                ) => `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
-        <span>${i + 1}. ${u.name}</span>
-        <span style="color:var(--text3);font-size:11px">${(u.phone || "").replace(/(\d{4})\d{4}(\d{3})/, "$1****$2")}</span>
-        <span style="color:var(--primary);font-weight:700">${u.score || 0} pt</span>
-      </div>`,
-              )
-              .join("") +
-            (users.length > 20
-              ? `<div style="text-align:center;font-size:12px;color:var(--text3);padding-top:8px">و ${users.length - 20} نفر دیگر...</div>`
-              : "");
-        } catch (e) {
-          el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
-        }
-      }
-
-      // =============================================
-      //  HISTORY — تاریخچه بازی‌های پایان‌یافته
-      // =============================================
-      async function loadHistory() {
-        if (!currentUser) return;
-        document.getElementById("history-loading").style.display = "block";
-        document.getElementById("history-list").innerHTML = "";
-        try {
-          if (!allMatches.length) {
-            const [rawMatches, rawPreds] = await Promise.all([
-              sbGet("matches", "order=kickoff.asc"),
-              sbGet("predictions", `phone=eq.${currentUser.phone}`)
-            ]);
-            allMatches = rawMatches || [];
-            myPredictions = {};
-            (rawPreds || []).forEach(p => { myPredictions[p.match_id] = p.pick; });
-          }
-          const done = allMatches.filter(m => m.result).sort((a,b) => b.kickoff - a.kickoff);
-          if (!done.length) {
-            document.getElementById("history-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز هیچ بازی‌ای پایان نیافته</div></div>`;
-            document.getElementById("history-loading").style.display = "none";
-            return;
-          }
-          let correct = 0, wrong = 0, missed = 0;
-          const rMap = (m, pick) => {
-            if (!pick) return "ثبت نکردید";
-            if (pick === "team1") return "برد " + m.team1;
-            if (pick === "draw") return "مساوی";
-            return "برد " + m.team2;
-          };
-          const rMapResult = (m) => {
-            if (m.result === "team1") return "برد " + m.team1;
-            if (m.result === "draw") return "مساوی";
-            return "برد " + m.team2;
-          };
-          let html = "";
-          done.forEach(m => {
-            const pick = myPredictions[m.match_id];
-            const isCorrect = pick && pick === m.result;
-            const isMissed = !pick;
-            if (isCorrect) correct++;
-            else if (isMissed) missed++;
-            else wrong++;
-            const pts = m.pts || PTS_MAP[m.stage] || 3;
-            html += `<div class="match-card">
-              <div class="match-header">
-                <span class="match-time">${new Date(m.kickoff).toLocaleDateString("fa-IR",{month:"short",day:"numeric"})}</span>
-                <span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage}</span>
-                <span class="badge ${isCorrect?"badge-open":isMissed?"badge-done":"badge-locked"}">${isMissed?"—":isCorrect?"✅ درست":"❌ اشتباه"}</span>
-              </div>
-              <div class="match-teams">
-                <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
-                <div class="vs">${m.score||"FT"}</div>
-                <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-                <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
-                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">نتیجه واقعی</div>
-                  <div style="font-weight:700">${rMapResult(m)}${m.score?" ("+m.score+")":""}</div>
-                </div>
-                <div style="background:${isCorrect?"var(--green-bg)":isMissed?"var(--bg3)":"var(--red-bg)"};border-radius:8px;padding:8px;text-align:center">
-                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">پیش‌بینی شما</div>
-                  <div style="font-weight:700;color:${isCorrect?"var(--primary)":isMissed?"var(--text3)":"var(--red)"}">${rMap(m,pick)}</div>
-                </div>
-              </div>
-              ${isCorrect?`<div style="text-align:center;font-size:12px;color:var(--primary);font-weight:700;margin-top:8px">+${pts} امتیاز 🎉</div>`:""}
+        const card = document.getElementById("admin-winners-card");
+        if (finalDone && !alreadyAnnounced) {
+          card.style.display = "block";
+          // نمایش پیش‌نمایش برندگان
+          const users = await sbGet("users","order=score.desc&limit=3");
+          const top3 = users||[];
+          const medals = ["🥇","🥈","🥉"];
+          document.getElementById("admin-winners-preview").innerHTML = `
+            <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px">
+              <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">برندگانی که اعلام می‌شوند:</div>
+              ${top3.map((u,i) => `<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)">
+                <span>${medals[i]} ${u.name}</span>
+                <span style="color:var(--primary);font-weight:700">${u.score||0} امتیاز</span>
+              </div>`).join("")}
             </div>`;
-          });
-          document.getElementById("history-list").innerHTML = `
-            <div class="stats-grid" style="margin-bottom:16px">
-              <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${correct}</div><div class="stat-lbl">✅ درست</div></div>
-              <div class="stat-box"><div class="stat-num" style="color:var(--red)">${wrong}</div><div class="stat-lbl">❌ اشتباه</div></div>
-              <div class="stat-box"><div class="stat-num" style="color:var(--text3)">${missed}</div><div class="stat-lbl">⬜ ثبت نشده</div></div>
-            </div>
-            ${html}`;
-        } catch(e) {
-          document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
+        } else {
+          card.style.display = "none";
         }
-        document.getElementById("history-loading").style.display = "none";
-      }
+      } catch(e) {}
+    }
 
-      // =============================================
-      //  ویرایش زمان بازی
-      // =============================================
-      function toggleEditTime(matchId) {
-        const el = document.getElementById("edit-time-" + matchId);
-        el.style.display = el.style.display === "none" ? "block" : "none";
+    // ===== اعلام رسمی برندگان توسط ادمین =====
+    async function announceWinners() {
+      if (!confirm("آیا مطمئن هستید؟ بعد از تایید، برندگان به همه کاربران نمایش داده می‌شوند.")) return;
+      try {
+        await sbPatch("settings", { value: "true" }, "key=eq.winners_announced");
+        showMsg(document.getElementById("admin-winners-msg"), "✅ برندگان رسماً اعلام شدند!", "success");
+        document.getElementById("admin-winners-card").style.display = "none";
+        _cache.lb = null; // invalidate cache
+      } catch(e) {
+        showMsg(document.getElementById("admin-winners-msg"), "خطا: "+e.message, "error");
       }
+    }
 
-      async function saveEditTime(matchId) {
-        const date = document.getElementById("edit-date-" + matchId)?.value;
-        const time = document.getElementById("edit-time-val-" + matchId)?.value;
-        if (!date || !time) return alert("تاریخ و ساعت را وارد کنید");
-        if (!confirm("زمان بازی تغییر کند؟")) return;
-        try {
-          const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
-          await sbPatch("matches", { kickoff }, `match_id=eq.${matchId}`);
-          alert("✅ زمان بازی بروز شد");
-          loadAdminMatches();
-        } catch(e) {
-          alert("خطا: " + e.message);
+    // =============================================
+    // ADMIN — افزودن بازی
+    // =============================================
+    async function addMatch() {
+      const msg = document.getElementById("add-match-msg");
+      const flag1 = document.getElementById("add-flag1").value.trim() || "🏳️";
+      const team1 = document.getElementById("add-team1").value.trim();
+      const flag2 = document.getElementById("add-flag2").value.trim() || "🏳️";
+      const team2 = document.getElementById("add-team2").value.trim();
+      const date = document.getElementById("add-date").value;
+      const time = document.getElementById("add-time").value;
+      const stage = document.getElementById("add-stage").value;
+      if (!team1||!team2||!date||!time) return showMsg(msg,"همه فیلدها را پر کنید","error");
+
+      // تبدیل ساعت تهران به UTC timestamp
+      const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
+
+      try {
+        await sbFetch("POST","matches",[{
+          match_id: "m_"+Date.now(),
+          flag1, team1, flag2, team2,
+          kickoff, stage,
+          pts: PTS_MAP[stage]||3,
+          result: null, score: null
+        }],"");
+        showMsg(msg,"✅ بازی اضافه شد","success");
+        ["add-flag1","add-team1","add-flag2","add-team2"].forEach(id => document.getElementById(id).value="");
+        _cache.matches = null; // invalidate
+        loadAdminMatches();
+      } catch(e) {
+        showMsg(msg,"خطا: "+e.message,"error");
+      }
+    }
+
+    // =============================================
+    // ADMIN — مدیریت بازی‌ها
+    // =============================================
+    async function loadAdminMatches() {
+      const el = document.getElementById("admin-matches-list");
+      el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
+      try {
+        const list = await sbGet("matches","order=kickoff.asc");
+        if (!list||!list.length) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز بازی‌ای ثبت نشده</div></div>`;
+          return;
         }
-      }
+        el.innerHTML = list.map(m => {
+          const t = new Date(m.kickoff).toLocaleString("fa-IR",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+          const pts = m.pts||PTS_MAP[m.stage]||3;
 
-      // =============================================
-      //  UTILS
-      // =============================================
-      function showMsg(el, text, type) {
-        el.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
-        if (type !== "info")
-          setTimeout(() => {
-            el.innerHTML = "";
-          }, 5000);
+          // محاسبه تاریخ/ساعت تهران برای ویرایش
+          const tehranDate = new Date(m.kickoff + 3.5*3600000 - new Date().getTimezoneOffset()*60000);
+          const editDate = tehranDate.toISOString().slice(0,10);
+          const editTime = tehranDate.toISOString().slice(11,16);
+
+          const doneHtml = m.result
+            ? `<div class="alert alert-success" style="margin:8px 0 0;padding:8px 12px">✅ ثبت شده: ${m.result==="team1"?"برد "+m.team1:m.result==="draw"?"مساوی":"برد "+m.team2} ${m.score||""}</div>`
+            : `<div style="margin-top:10px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+                  <select id="res-${m.match_id}">
+                    <option value="">نتیجه بازی...</option>
+                    <option value="team1">برد ${m.team1}</option>
+                    <option value="draw">مساوی</option>
+                    <option value="team2">برد ${m.team2}</option>
+                  </select>
+                  <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه</button>
+                  <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditTime('${m.match_id}')">🕐 ویرایش زمان</button>
+                  <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
+                </div>
+                <div id="edit-time-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+                  <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px">ویرایش زمان (به وقت تهران)</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+                    <input type="date" id="edit-date-${m.match_id}" value="${editDate}" style="margin-bottom:0"/>
+                    <input type="time" id="edit-time-val-${m.match_id}" value="${editTime}" style="margin-bottom:0"/>
+                  </div>
+                  <button class="btn-sm btn-gold" onclick="saveEditTime('${m.match_id}')">✓ ذخیره</button>
+                </div>
+              </div>`;
+          return `<div class="admin-match">
+            <div style="font-size:13px;font-weight:700">${m.flag1} ${m.team1} vs ${m.team2} ${m.flag2}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">${t} · ${STAGE_LABEL[m.stage]||m.stage} · ${pts} امتیاز</div>
+            ${doneHtml}
+          </div>`;
+        }).join("");
+      } catch(e) {
+        el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
       }
+    }
+
+    // =============================================
+    // ثبت نتیجه + امتیازدهی
+    // =============================================
+    async function setResult(matchId, pts) {
+      const sel = document.getElementById("res-"+matchId);
+      const scr = document.getElementById("scr-"+matchId);
+      if (!sel?.value) return alert("نتیجه را انتخاب کنید");
+      const result = sel.value;
+      const score = scr?.value || "";
+      if (!["team1","draw","team2"].includes(result)) return; // validation
+
+      const countRes = await sbGet("predictions",`match_id=eq.${matchId}&pick=eq.${result}&select=phone`);
+      const winnerCount = countRes?.length || 0;
+
+      if (!confirm(`ثبت نتیجه "${result==="team1"?"برد تیم اول":result==="draw"?"مساوی":"برد تیم دوم"}"؟\n${winnerCount} نفر امتیاز می‌گیرند.\nاین عمل برگشت‌پذیر نیست.`)) return;
+
+      let winnerCount_actual = 0;
+      try {
+        // ۱. آپدیت نتیجه بازی
+        await sbPatch("matches", { result, score }, `match_id=eq.${matchId}`);
+
+        // ۲. امتیاز به همه برندگان — با RPC atomic
+        if (winnerCount > 0) {
+          const winners = await sbGet("predictions",`match_id=eq.${matchId}&pick=eq.${result}`);
+          // RPC atomic — اگه scored=true باشه دوباره امتیاز نمیده
+          let actualScored = 0;
+          for (const pred of winners) {
+            const res = await sbRpc("add_score", { p_phone: pred.phone, p_pts: pts, p_match_id: matchId });
+            if (res === 'ok' || (Array.isArray(res) && res[0] === 'ok')) actualScored++;
+          }
+          // آپدیت winnerCount برای نمایش دقیق
+          winnerCount_actual = actualScored;
+        }
+
+        // invalidate caches
+        _cache.matches = null;
+        _cache.lb = null;
+
+        alert(`✅ نتیجه ثبت شد!\n${winnerCount_actual} نفر +${pts} امتیاز گرفتند.`);
+        loadAdminMatches();
+        checkAnnounceWinners();
+        if (currentUser) updateUBar();
+      } catch(e) {
+        alert("خطا: "+e.message);
+      }
+    }
+
+    async function delMatch(id) {
+      if (!confirm("این بازی حذف شود؟")) return;
+      try {
+        await sbDel("matches",`match_id=eq.${id}`);
+        _cache.matches = null;
+        loadAdminMatches();
+      } catch(e) { alert("خطا: "+e.message); }
+    }
+
+    // =============================================
+    // ویرایش زمان
+    // =============================================
+    function toggleEditTime(matchId) {
+      const el = document.getElementById("edit-time-"+matchId);
+      el.style.display = el.style.display==="none" ? "block" : "none";
+    }
+
+    async function saveEditTime(matchId) {
+      const date = document.getElementById("edit-date-"+matchId)?.value;
+      const time = document.getElementById("edit-time-val-"+matchId)?.value;
+      if (!date||!time) return alert("تاریخ و ساعت را وارد کنید");
+      if (!confirm("زمان بازی تغییر کند؟")) return;
+      try {
+        const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
+        await sbPatch("matches",{ kickoff },`match_id=eq.${matchId}`);
+        _cache.matches = null;
+        alert("✅ زمان بروز شد");
+        loadAdminMatches();
+      } catch(e) { alert("خطا: "+e.message); }
+    }
+
+    // =============================================
+    // ADMIN — لیست کاربران
+    // =============================================
+    async function loadAdminUsers() {
+      const el = document.getElementById("admin-users-list");
+      el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
+      try {
+        const users = await sbGet("users","order=score.desc");
+        if (!users||!users.length) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">هنوز کسی ثبت‌نام نکرده</div></div>`;
+          return;
+        }
+        el.innerHTML = `<div style="font-size:12px;color:var(--text3);margin-bottom:8px">تعداد کل: ${users.length} نفر</div>`+
+          users.slice(0,50).map((u,i) => `
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+              <span>${i+1}. ${u.name}</span>
+              <span style="color:var(--text3);font-size:11px">${(u.phone||"").replace(/(\d{4})\d{4}(\d{3})/,"$1****$2")}</span>
+              <span style="color:var(--primary);font-weight:700">${u.score||0} pt</span>
+            </div>`).join("")+
+          (users.length>50 ? `<div style="text-align:center;font-size:12px;color:var(--text3);padding-top:8px">و ${users.length-50} نفر دیگر...</div>` : "");
+      } catch(e) {
+        el.innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
+      }
+    }
+
+    // =============================================
+    // UTILS
+    // =============================================
+    function showMsg(el, text, type) {
+      el.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
+      if (type!=="info") setTimeout(()=>{ el.innerHTML=""; }, 5000);
+    }
     </script>
   </body>
 </html>
