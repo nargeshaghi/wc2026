@@ -279,12 +279,26 @@
           <div class="card">
             <div class="card-title">➕ افزودن بازی جدید</div>
             <div id="add-match-msg"></div>
-            <div style="display:grid;grid-template-columns:52px 1fr;gap:8px">
-              <div><label>پرچم</label><input type="text" id="add-flag1" placeholder="🇮🇷" style="text-align:center;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif;font-size:22px;padding:6px"/></div>
+            <div style="display:grid;grid-template-columns:64px 1fr;gap:8px">
+              <div>
+                <label>پرچم</label>
+                <div style="position:relative">
+                  <button type="button" id="flag1-btn" onclick="toggleFlagPicker('flag1')" style="width:100%;height:46px;border:1px solid var(--border);border-radius:10px;background:var(--bg3);font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif">🏳️</button>
+                  <input type="hidden" id="add-flag1" value="🏳️"/>
+                  <div id="flag1-picker" style="display:none;position:absolute;top:50px;right:0;z-index:100;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:var(--shadow-md);width:280px;max-height:200px;overflow-y:auto;display:none;flex-wrap:wrap;gap:4px" dir="ltr"></div>
+                </div>
+              </div>
               <div><label>تیم اول</label><input type="text" id="add-team1" placeholder="ایران"/></div>
             </div>
-            <div style="display:grid;grid-template-columns:52px 1fr;gap:8px">
-              <div><label>پرچم</label><input type="text" id="add-flag2" placeholder="🇦🇷" style="text-align:center;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif;font-size:22px;padding:6px"/></div>
+            <div style="display:grid;grid-template-columns:64px 1fr;gap:8px">
+              <div>
+                <label>پرچم</label>
+                <div style="position:relative">
+                  <button type="button" id="flag2-btn" onclick="toggleFlagPicker('flag2')" style="width:100%;height:46px;border:1px solid var(--border);border-radius:10px;background:var(--bg3);font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif">🏳️</button>
+                  <input type="hidden" id="add-flag2" value="🏳️"/>
+                  <div id="flag2-picker" style="display:none;position:absolute;top:50px;right:0;z-index:100;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:var(--shadow-md);width:280px;max-height:200px;overflow-y:auto;flex-wrap:wrap;gap:4px" dir="ltr"></div>
+                </div>
+              </div>
               <div><label>تیم دوم</label><input type="text" id="add-team2" placeholder="آرژانتین"/></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -1110,8 +1124,72 @@
     }
 
     // =============================================
-    // UTILS
+    // FLAG PICKER
     // =============================================
+    const FLAGS = [
+      "🇦🇫","🇦🇱","🇩🇿","🇦🇩","🇦🇴","🇦🇬","🇦🇷","🇦🇲","🇦🇺","🇦🇹",
+      "🇦🇿","🇧🇸","🇧🇭","🇧🇩","🇧🇧","🇧🇾","🇧🇪","🇧🇿","🇧🇯","🇧🇹",
+      "🇧🇴","🇧🇦","🇧🇼","🇧🇷","🇧🇳","🇧🇬","🇧🇫","🇧🇮","🇨🇻","🇰🇭",
+      "🇨🇲","🇨🇦","🇨🇫","🇹🇩","🇨🇱","🇨🇳","🇨🇴","🇰🇲","🇨🇬","🇨🇩",
+      "🇨🇷","🇭🇷","🇨🇺","🇨🇾","🇨🇿","🇩🇰","🇩🇯","🇩🇲","🇩🇴","🇪🇨",
+      "🇪🇬","🇸🇻","🇬🇶","🇪🇷","🇪🇪","🇸🇿","🇪🇹","🇫🇯","🇫🇮","🇫🇷",
+      "🇬🇦","🇬🇲","🇬🇪","🇩🇪","🇬🇭","🇬🇷","🇬🇩","🇬🇹","🇬🇳","🇬🇼",
+      "🇬🇾","🇭🇹","🇭🇳","🇭🇺","🇮🇸","🇮🇳","🇮🇩","🇮🇷","🇮🇶","🇮🇪",
+      "🇮🇱","🇮🇹","🇯🇲","🇯🇵","🇯🇴","🇰🇿","🇰🇪","🇰🇮","🇰🇵","🇰🇷",
+      "🇰🇼","🇰🇬","🇱🇦","🇱🇻","🇱🇧","🇱🇸","🇱🇷","🇱🇾","🇱🇮","🇱🇹",
+      "🇱🇺","🇲🇬","🇲🇼","🇲🇾","🇲🇻","🇲🇱","🇲🇹","🇲🇭","🇲🇷","🇲🇺",
+      "🇲🇽","🇫🇲","🇲🇩","🇲🇨","🇲🇳","🇲🇪","🇲🇦","🇲🇿","🇲🇲","🇳🇦",
+      "🇳🇷","🇳🇵","🇳🇱","🇳🇿","🇳🇮","🇳🇪","🇳🇬","🇲🇰","🇳🇴","🇴🇲",
+      "🇵🇰","🇵🇼","🇵🇸","🇵🇦","🇵🇬","🇵🇾","🇵🇪","🇵🇭","🇵🇱","🇵🇹",
+      "🇶🇦","🇷🇴","🇷🇺","🇷🇼","🇰🇳","🇱🇨","🇻🇨","🇼🇸","🇸🇲","🇸🇹",
+      "🇸🇦","🇸🇳","🇷🇸","🇸🇱","🇸🇬","🇸🇰","🇸🇮","🇸🇧","🇸🇴","🇿🇦",
+      "🇸🇸","🇪🇸","🇱🇰","🇸🇩","🇸🇷","🇸🇪","🇨🇭","🇸🇾","🇹🇼","🇹🇯",
+      "🇹🇿","🇹🇭","🇹🇱","🇹🇬","🇹🇴","🇹🇹","🇹🇳","🇹🇷","🇹🇲","🇹🇻",
+      "🇺🇬","🇺🇦","🇦🇪","🇬🇧","🇺🇸","🇺🇾","🇺🇿","🇻🇺","🇻🇪","🇻🇳",
+      "🇾🇪","🇿🇲","🇿🇼","🏳️"
+    ];
+
+    let activePicker = null;
+
+    function toggleFlagPicker(which) {
+      const pickerId = which+"-picker";
+      const picker = document.getElementById(pickerId);
+      if (!picker) return;
+
+      // اگه picker محتوا نداره، بساز
+      if (!picker.children.length) {
+        picker.style.display = "flex";
+        FLAGS.forEach(flag => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = flag;
+          btn.style.cssText = "font-size:24px;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;padding:4px;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif;width:40px;height:40px";
+          btn.onmouseover = () => btn.style.background = "var(--bg3)";
+          btn.onmouseout = () => btn.style.background = "none";
+          btn.onclick = () => selectFlag(which, flag);
+          picker.appendChild(btn);
+        });
+      }
+
+      const isOpen = picker.style.display === "flex";
+      // بستن همه picker های باز
+      document.querySelectorAll("[id$='-picker']").forEach(p => p.style.display = "none");
+      if (!isOpen) picker.style.display = "flex";
+    }
+
+    function selectFlag(which, flag) {
+      document.getElementById("add-"+which).value = flag;
+      document.getElementById(which+"-btn").textContent = flag;
+      document.getElementById(which+"-picker").style.display = "none";
+    }
+
+    // بستن picker با کلیک بیرون
+    document.addEventListener("click", e => {
+      if (!e.target.closest("[id$='-picker']") && !e.target.closest("[id$='-btn']")) {
+        document.querySelectorAll("[id$='-picker']").forEach(p => p.style.display = "none");
+      }
+    });
+    
     function showMsg(el, text, type) {
       el.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
       if (type!=="info") setTimeout(()=>{ el.innerHTML=""; }, 5000);
