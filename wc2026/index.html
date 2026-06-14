@@ -59,6 +59,15 @@
         position: relative;
         overflow: hidden;
       }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px),
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px);
+        pointer-events: none;
+      }
       .hero-logo {
         height: 120px;
         object-fit: contain;
@@ -83,6 +92,96 @@
         50% {
           transform: translateY(-6px);
         }
+      }
+
+      /* PRIZE CARDS */
+      .prize-label {
+        font-size: 15px;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      .prize-row {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 6px;
+        justify-content: center;
+        align-items: flex-end;
+        margin-bottom: 24px;
+        position: relative;
+        z-index: 1;
+      }
+      .prize-card {
+        flex: 1 1 0;
+        min-width: 0;
+        border-radius: 14px;
+        padding: 8px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        position: relative;
+        animation: float 3.5s ease-in-out infinite;
+        border: 1px solid rgba(255,255,255,0.25);
+      }
+      .prize-card:nth-child(2) { animation-delay: 0.4s; }
+      .prize-card:nth-child(3) { animation-delay: 0.8s; }
+      .prize-gold,
+      .prize-silver,
+      .prize-bronze {
+        background: rgba(255,255,255,0.12);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.15);
+      }
+      .prize-gold {
+        transform: translateY(-14px) scale(1.08);
+        z-index: 2;
+        order: 2;
+      }
+      .prize-silver {
+        order: 1;
+      }
+      .prize-bronze {
+        order: 3;
+      }
+      .prize-medal {
+        font-size: 22px;
+        flex-shrink: 0;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      }
+      .prize-text {
+        text-align: right;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .prize-rank-tag {
+        font-size: 9px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.75);
+        letter-spacing: 0.3px;
+        margin-bottom: 1px;
+        white-space: nowrap;
+      }
+      .prize-amount-row {
+        display: flex;
+        align-items: baseline;
+        gap: 3px;
+        white-space: nowrap;
+      }
+      .prize-amount {
+        font-size: 18px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      }
+      .prize-unit {
+        font-size: 10px;
+        color: rgba(255,255,255,0.85);
+        font-weight: 700;
+        white-space: nowrap;
       }
       .hero-title {
         font-size: 20px;
@@ -365,6 +464,7 @@
         font-size: 32px;
         display: block;
         margin-bottom: 5px;
+        font-family: "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", "Twemoji Mozilla", sans-serif;
       }
       .team-name {
         font-size: 12px;
@@ -662,6 +762,34 @@
           padding: 12px;
         }
       }
+
+      /* TOAST */
+      .toast-msg {
+        position: fixed;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-20px);
+        background: var(--primary);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 20px;
+        border-radius: 100px;
+        box-shadow: 0 4px 16px rgba(26,122,60,0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        z-index: 2000;
+        white-space: nowrap;
+      }
+      .toast-msg.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     </style>
   </head>
   <body>
@@ -704,7 +832,30 @@
         alt="افق دارو"
         onclick="handleLogoClick()"
       />
-      <span class="hero-trophy">🏆</span>
+      <div class="prize-label">💊 ⚽ جوایز نقدی مسابقه ⚽ 💊</div>
+      <div class="prize-row">
+        <div class="prize-card prize-silver">
+          <div class="prize-medal">🥈</div>
+          <div class="prize-text">
+            <div class="prize-rank-tag">نفر دوم</div>
+            <div class="prize-amount-row"><span class="prize-amount">۱۵</span><span class="prize-unit">میلیون</span></div>
+          </div>
+        </div>
+        <div class="prize-card prize-gold">
+          <div class="prize-medal">🥇</div>
+          <div class="prize-text">
+            <div class="prize-rank-tag">نفر اول</div>
+            <div class="prize-amount-row"><span class="prize-amount">۲۵</span><span class="prize-unit">میلیون</span></div>
+          </div>
+        </div>
+        <div class="prize-card prize-bronze">
+          <div class="prize-medal">🥉</div>
+          <div class="prize-text">
+            <div class="prize-rank-tag">نفر سوم</div>
+            <div class="prize-amount-row"><span class="prize-amount">۱۰</span><span class="prize-unit">میلیون</span></div>
+          </div>
+        </div>
+      </div>
       <div class="hero-title">مسابقه پیش‌بینی جام جهانی</div>
       <div class="hero-sub">FIFA World Cup 2026 · USA · Canada · Mexico</div>
       <div class="hero-badge">⚽ داروسازی افق دارو</div>
@@ -725,13 +876,6 @@
         id="tab-leaderboard"
       >
         🏅 جدول
-      </button>
-      <button
-        class="tab-btn"
-        onclick="showTab('history')"
-        id="tab-history"
-      >
-        📊 نتایج من
       </button>
     </div>
 
@@ -829,14 +973,6 @@
           <div class="spinner"></div>
         </div>
         <div id="lb-list"></div>
-      </div>
-
-      <!-- HISTORY -->
-      <div id="sec-history" class="section">
-        <div id="history-loading" class="loading">
-          <div class="spinner"></div>در حال بارگذاری...
-        </div>
-        <div id="history-list"></div>
       </div>
 
       <!-- ADMIN (hidden tab, accessible via logo) -->
@@ -962,6 +1098,8 @@
       let adminLoggedIn = false;
       let logoClickCount = 0;
       let logoClickTimer = null;
+      let matchesCache = null;
+      let matchesCacheTime = 0;
 
       // =============================================
       //  SUPABASE HELPERS
@@ -1139,7 +1277,6 @@
         showSec(t);
         if (t === "matches") loadMatches();
         if (t === "leaderboard") loadLB();
-        if (t === "history") loadHistory();
         if (t === "admin" && adminLoggedIn) {
           loadAdminMatches();
           loadAdminUsers();
@@ -1149,8 +1286,15 @@
       // =============================================
       //  MATCHES — بارگذاری و نمایش بازی‌ها
       // =============================================
-      async function loadMatches() {
+      async function loadMatches(forceRefresh = false) {
         if (!currentUser) return;
+        // cache برای ۳۰ ثانیه — کاهش درخواست‌های تکراری
+        if (!forceRefresh && matchesCache && Date.now() - matchesCacheTime < 30000) {
+          allMatches = matchesCache.matches;
+          myPredictions = matchesCache.preds;
+          renderMatches();
+          return;
+        }
         document.getElementById("matches-loading").style.display = "block";
         document.getElementById("matches-list").innerHTML = "";
         try {
@@ -1165,6 +1309,8 @@
           (rawPreds || []).forEach((p) => {
             myPredictions[p.match_id] = p.pick;
           });
+          matchesCache = { matches: allMatches, preds: myPredictions };
+          matchesCacheTime = Date.now();
           renderMatches();
         } catch (e) {
           document.getElementById("matches-list").innerHTML =
@@ -1175,16 +1321,14 @@
 
       function renderMatches() {
         const el = document.getElementById("matches-list");
-        // فقط بازی‌های فعال (بدون نتیجه)
-        const active = allMatches.filter(m => !m.result);
-        if (!active.length) {
-          el.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">بازی فعالی برای پیش‌بینی وجود ندارد<br><span style="opacity:.6;font-size:12px">نتایج را در تب «نتایج من» ببینید</span></div></div>`;
+        if (!allMatches.length) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">هنوز بازی‌ای اضافه نشده<br><span style="opacity:.6;font-size:12px">ادمین بازی‌های امشب را به زودی اضافه می‌کند</span></div></div>`;
           return;
         }
         const now = Date.now();
         // گروه‌بندی بر اساس تاریخ
         const byDate = {};
-        active.forEach((m) => {
+        allMatches.forEach((m) => {
           const d = new Date(m.kickoff).toLocaleDateString("fa-IR", {
             weekday: "long",
             day: "numeric",
@@ -1270,13 +1414,12 @@
         if (!m || Date.now() >= m.kickoff - 3600000)
           return alert("⏰ زمان پیش‌بینی تمام شده");
         try {
-          // چک کن قبلاً ثبت کرده یا نه
-          const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
-          if (existing && existing.length > 0) {
-            await sbPatch("predictions", { pick }, `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
-          } else {
-            await sbFetch("POST", "predictions", [{ phone: currentUser.phone, match_id: matchId, pick }], "");
-          }
+          // upsert: اگه قبلاً ثبت کرده update میشه، وگرنه insert
+          await sbUpsert("predictions", {
+            phone: currentUser.phone,
+            match_id: matchId,
+            pick,
+          });
           myPredictions[matchId] = pick;
           renderMatches();
         } catch (e) {
@@ -1353,40 +1496,24 @@
 
       // =============================================
       //  منطق برنده:
-      //  فقط بعد از فینال (آخرین بازی با stage=final و result ثبت شده)
-      //  ۳ نفر اول برنده اعلام میشن
-      //  قبل از اون فقط نفرات برتر نشون داده میشه
+      //  وقتی همه بازی‌ها نتیجه دارن،
+      //  ۳ نفر اول جدول (بیشترین score) برنده‌ان
       // =============================================
       function renderWinners(ml) {
+        const total = ml.length;
+        const done = ml.filter((m) => m.result).length;
         const box = document.getElementById("winner-box");
-        if (!ml.length) { box.innerHTML = ""; return; }
-
-        // چک کن آیا فینال برگزار شده
-        const finalMatch = ml.find(m => m.stage === "final" && m.result);
+        if (!total || done < total) {
+          box.innerHTML = "";
+          return;
+        }
         const top3 = lbData.slice(0, 3);
         const medals = ["🥇", "🥈", "🥉"];
-
-        if (finalMatch) {
-          // فینال تموم شده — برندگان نهایی رو نشون بده
-          const labels = ["برنده اول", "برنده دوم", "برنده سوم"];
-          box.innerHTML = `<div class="winner-banner">
-            <div class="winner-title">🏆 برندگان نهایی مسابقه</div>
-            ${top3.map((u, i) => `<div class="winner-item">${medals[i]} <strong>${labels[i]}:</strong>&nbsp;${u.name}&nbsp;<span style="color:var(--text3);font-size:11px">(${u.score || 0} امتیاز)</span></div>`).join("")}
-          </div>`;
-        } else if (lbData.length > 0 && ml.some(m => m.result)) {
-          // بازی‌هایی انجام شده ولی فینال نشده — نفرات برتر رو نشون بده
-          box.innerHTML = `<div style="background:var(--green-bg);border:1px solid #b8e8c8;border-radius:12px;padding:14px;margin-bottom:16px">
-            <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;text-align:center">🏅 نفرات برتر فعلی</div>
-            ${top3.map((u, i) => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #d0ead8;font-size:13px">
-              <span>${medals[i]}</span>
-              <span style="flex:1;font-weight:600">${u.name}</span>
-              <span style="color:var(--primary);font-weight:700">${u.score || 0} امتیاز</span>
-            </div>`).join("")}
-            <div style="font-size:11px;color:var(--text3);margin-top:8px;text-align:center">برندگان نهایی بعد از پایان فینال اعلام می‌شوند</div>
-          </div>`;
-        } else {
-          box.innerHTML = "";
-        }
+        const labels = ["برنده اول", "برنده دوم", "برنده سوم"];
+        box.innerHTML = `<div class="winner-banner">
+    <div class="winner-title">🏆 برندگان نهایی مسابقه</div>
+    ${top3.map((u, i) => `<div class="winner-item">${medals[i]} <strong>${labels[i]}:</strong>&nbsp;${u.name}&nbsp;<span style="color:var(--text3);font-size:11px">(${u.score || 0} امتیاز)</span></div>`).join("")}
+  </div>`;
       }
 
       // =============================================
@@ -1420,7 +1547,10 @@
           return showMsg(msg, "همه فیلدها را پر کنید", "error");
 
         // تبدیل ساعت تهران (UTC+3:30) به timestamp
-        const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
+        const localMs = new Date(`${date}T${time}:00`).getTime();
+        const browserOffsetMs = new Date().getTimezoneOffset() * 60000;
+        const tehranOffsetMs = 3.5 * 3600000;
+        const kickoff = localMs + browserOffsetMs + tehranOffsetMs;
 
         try {
           await sbFetch(
@@ -1443,6 +1573,7 @@
             "",
           );
           showMsg(msg, "✅ بازی اضافه شد", "success");
+          matchesCache = null;
           ["add-flag1", "add-team1", "add-flag2", "add-team2"].forEach(
             (id) => (document.getElementById(id).value = ""),
           );
@@ -1470,13 +1601,6 @@
                 minute: "2-digit",
               });
               const pts = m.pts || PTS_MAP[m.stage] || 3;
-              // محاسبه تاریخ و ساعت فعلی بازی برای نمایش در فرم ویرایش
-              const kickoffDate = new Date(m.kickoff);
-              const tehranOffset = 3.5 * 3600000;
-              const tehranTime = new Date(m.kickoff + tehranOffset - new Date().getTimezoneOffset() * 60000);
-              const editDate = tehranTime.toISOString().slice(0,10);
-              const editTime = tehranTime.toISOString().slice(11,16);
-
               const doneHtml = m.result
                 ? `<div class="alert alert-success" style="margin:8px 0 0;padding:8px 12px">✅ نتیجه ثبت شده: ${m.result === "team1" ? "برد " + m.team1 : m.result === "draw" ? "مساوی" : "برد " + m.team2} ${m.score || ""}</div>`
                 : `<div style="margin-top:10px">
@@ -1489,18 +1613,9 @@
               </select>
               <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه</button>
-              <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditTime('${m.match_id}')">🕐 ویرایش زمان</button>
+            <div style="display:flex;gap:8px">
+              <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه و امتیازدهی</button>
               <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
-            </div>
-            <div id="edit-time-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
-              <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px">ویرایش زمان بازی (به وقت تهران)</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-                <input type="date" id="edit-date-${m.match_id}" value="${editDate}" style="margin-bottom:0"/>
-                <input type="time" id="edit-time-val-${m.match_id}" value="${editTime}" style="margin-bottom:0"/>
-              </div>
-              <button class="btn-sm btn-gold" onclick="saveEditTime('${m.match_id}')">✓ ذخیره زمان جدید</button>
             </div>
           </div>`;
               return `<div class="admin-match">
@@ -1542,15 +1657,23 @@
             `match_id=eq.${matchId}&pick=eq.${result}`,
           );
 
-          // ۳. امتیازدهی به هر برنده — همزمان
+          // ۳. امتیازدهی به هر برنده
           if (winners && winners.length > 0) {
-            await Promise.all(
-              winners.map(pred =>
-                sbFetch("POST", "rpc/add_score", { p_phone: pred.phone, p_pts: pts }, "")
-              )
-            );
+            for (const pred of winners) {
+              const userArr = await sbGet("users", `phone=eq.${pred.phone}`);
+              if (userArr && userArr[0]) {
+                const newScore = (userArr[0].score || 0) + pts;
+                await sbFetch(
+                  "POST",
+                  "rpc/add_score",
+                  { p_phone: pred.phone, p_pts: pts },
+                  "",
+                );
+              }
+            }
           }
 
+          matchesCache = null; // پاک کردن کش چون نتیجه عوض شده
           alert(`✅ نتیجه ثبت شد!\n${winners?.length || 0} نفر امتیاز گرفتند.`);
           loadAdminMatches();
           if (currentUser) updateUBar();
@@ -1563,6 +1686,7 @@
         if (!confirm("این بازی حذف شود؟")) return;
         try {
           await sbDel("matches", `match_id=eq.${id}`);
+          matchesCache = null;
           loadAdminMatches();
         } catch (e) {
           alert("خطا: " + e.message);
@@ -1602,112 +1726,22 @@
       }
 
       // =============================================
-      //  HISTORY — تاریخچه بازی‌های پایان‌یافته
-      // =============================================
-      async function loadHistory() {
-        if (!currentUser) return;
-        document.getElementById("history-loading").style.display = "block";
-        document.getElementById("history-list").innerHTML = "";
-        try {
-          if (!allMatches.length) {
-            const [rawMatches, rawPreds] = await Promise.all([
-              sbGet("matches", "order=kickoff.asc"),
-              sbGet("predictions", `phone=eq.${currentUser.phone}`)
-            ]);
-            allMatches = rawMatches || [];
-            myPredictions = {};
-            (rawPreds || []).forEach(p => { myPredictions[p.match_id] = p.pick; });
-          }
-          const done = allMatches.filter(m => m.result).sort((a,b) => b.kickoff - a.kickoff);
-          if (!done.length) {
-            document.getElementById("history-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">هنوز هیچ بازی‌ای پایان نیافته</div></div>`;
-            document.getElementById("history-loading").style.display = "none";
-            return;
-          }
-          let correct = 0, wrong = 0, missed = 0;
-          const rMap = (m, pick) => {
-            if (!pick) return "ثبت نکردید";
-            if (pick === "team1") return "برد " + m.team1;
-            if (pick === "draw") return "مساوی";
-            return "برد " + m.team2;
-          };
-          const rMapResult = (m) => {
-            if (m.result === "team1") return "برد " + m.team1;
-            if (m.result === "draw") return "مساوی";
-            return "برد " + m.team2;
-          };
-          let html = "";
-          done.forEach(m => {
-            const pick = myPredictions[m.match_id];
-            const isCorrect = pick && pick === m.result;
-            const isMissed = !pick;
-            if (isCorrect) correct++;
-            else if (isMissed) missed++;
-            else wrong++;
-            const pts = m.pts || PTS_MAP[m.stage] || 3;
-            html += `<div class="match-card">
-              <div class="match-header">
-                <span class="match-time">${new Date(m.kickoff).toLocaleDateString("fa-IR",{month:"short",day:"numeric"})}</span>
-                <span class="badge badge-stage">${STAGE_LABEL[m.stage]||m.stage}</span>
-                <span class="badge ${isCorrect?"badge-open":isMissed?"badge-done":"badge-locked"}">${isMissed?"—":isCorrect?"✅ درست":"❌ اشتباه"}</span>
-              </div>
-              <div class="match-teams">
-                <div class="team"><span class="team-flag">${m.flag1}</span><span class="team-name">${m.team1}</span></div>
-                <div class="vs">${m.score||"FT"}</div>
-                <div class="team"><span class="team-flag">${m.flag2}</span><span class="team-name">${m.team2}</span></div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-                <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center">
-                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">نتیجه واقعی</div>
-                  <div style="font-weight:700">${rMapResult(m)}${m.score?" ("+m.score+")":""}</div>
-                </div>
-                <div style="background:${isCorrect?"var(--green-bg)":isMissed?"var(--bg3)":"var(--red-bg)"};border-radius:8px;padding:8px;text-align:center">
-                  <div style="color:var(--text3);margin-bottom:3px;font-size:11px">پیش‌بینی شما</div>
-                  <div style="font-weight:700;color:${isCorrect?"var(--primary)":isMissed?"var(--text3)":"var(--red)"}">${rMap(m,pick)}</div>
-                </div>
-              </div>
-              ${isCorrect?`<div style="text-align:center;font-size:12px;color:var(--primary);font-weight:700;margin-top:8px">+${pts} امتیاز 🎉</div>`:""}
-            </div>`;
-          });
-          document.getElementById("history-list").innerHTML = `
-            <div class="stats-grid" style="margin-bottom:16px">
-              <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${correct}</div><div class="stat-lbl">✅ درست</div></div>
-              <div class="stat-box"><div class="stat-num" style="color:var(--red)">${wrong}</div><div class="stat-lbl">❌ اشتباه</div></div>
-              <div class="stat-box"><div class="stat-num" style="color:var(--text3)">${missed}</div><div class="stat-lbl">⬜ ثبت نشده</div></div>
-            </div>
-            ${html}`;
-        } catch(e) {
-          document.getElementById("history-list").innerHTML = `<div class="alert alert-error">خطا: ${e.message}</div>`;
-        }
-        document.getElementById("history-loading").style.display = "none";
-      }
-
-      // =============================================
-      //  ویرایش زمان بازی
-      // =============================================
-      function toggleEditTime(matchId) {
-        const el = document.getElementById("edit-time-" + matchId);
-        el.style.display = el.style.display === "none" ? "block" : "none";
-      }
-
-      async function saveEditTime(matchId) {
-        const date = document.getElementById("edit-date-" + matchId)?.value;
-        const time = document.getElementById("edit-time-val-" + matchId)?.value;
-        if (!date || !time) return alert("تاریخ و ساعت را وارد کنید");
-        if (!confirm("زمان بازی تغییر کند؟")) return;
-        try {
-          const kickoff = new Date(`${date}T${time}:00+03:30`).getTime();
-          await sbPatch("matches", { kickoff }, `match_id=eq.${matchId}`);
-          alert("✅ زمان بازی بروز شد");
-          loadAdminMatches();
-        } catch(e) {
-          alert("خطا: " + e.message);
-        }
-      }
-
-      // =============================================
       //  UTILS
       // =============================================
+      function showToast(text) {
+        let toast = document.getElementById("toast-msg");
+        if (!toast) {
+          toast = document.createElement("div");
+          toast.id = "toast-msg";
+          toast.className = "toast-msg";
+          document.body.appendChild(toast);
+        }
+        toast.textContent = text;
+        toast.classList.add("show");
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => toast.classList.remove("show"), 2000);
+      }
+
       function showMsg(el, text, type) {
         el.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
         if (type !== "info")
