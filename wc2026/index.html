@@ -637,47 +637,41 @@
       const m = allMatches.find(x => x.match_id === matchId && !x.result);
       if (!m) { alert("این بازی دیگر قابل پیش‌بینی نیست"); return; }
 
-      predictingNow = true;
+    predictingNow = true;
+// نشون بده در حال ثبت — ولی هنوز UI رو قطعی نکن
+const btnEl = document.querySelector(`.predict-btn[data-matchid="${matchId}"][data-pick="${pick}"]`);
+if (btnEl) { btnEl.textContent = "⏳"; btnEl.disabled = true; }
+try {
+  // بررسی دوباره از سرور (زمان دقیق kickoff)
+  const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
 
-      // نشون بده در حال ثبت — ولی هنوز UI رو قطعی نکن
-      const btnEl = document.querySelector(`.predict-btn[data-matchid="${matchId}"][data-pick="${pick}"]`);
-      if (btnEl) { btnEl.textContent = "⏳"; btnEl.disabled = true; }
-
-      try {
-        // بررسی دوباره از سرور (زمان دقیق kickoff)
-        const existing = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
-  
-        // ✅ Validation 4: بررسی زمان از سرور — مهم‌ترین check
-       const freshMatch = await sbGet("matches", `match_id=eq.${matchId}`);
-      if (!freshMatch || !freshMatch[0]) { alert("بازی یافت نشد"); predictingNow=false; renderMatches(); return; }
-      if (freshMatch[0].result) { alert("این بازی قبلاً پایان یافته"); loadMatches(true); predictingNow=false; return; }
-      if (Date.now() >= freshMatch[0].kickoff - 3600000) {
+  // ✅ Validation 4: بررسی زمان از سرور — مهم‌ترین check
+  const freshMatch = await sbGet("matches", `match_id=eq.${matchId}`);
+  if (!freshMatch || !freshMatch[0]) { alert("بازی یافت نشد"); predictingNow=false; renderMatches(); return; }
+  if (freshMatch[0].result) { alert("این بازی قبلاً پایان یافته"); loadMatches(true); predictingNow=false; return; }
+  if (Date.now() >= freshMatch[0].kickoff - 3600000) {
     alert("⏰ زمان پیش‌بینی تمام شده");
     loadMatches(true);
     predictingNow=false;
     return;
   }
-
   if (existing && existing.length > 0) {
     await sbPatch("predictions", { pick }, `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
   } else {
     await sbFetch("POST", "predictions", [{ phone: currentUser.phone, match_id: matchId, pick }], "");
   }
-
   // ✅ فقط بعد از تایید قطعی سرور، UI رو آپدیت کن
   myPredictions[matchId] = pick;
   _cache.matchesPreds = myPredictions;
-
   // ✅ یه بار دیگه از سرور بخون تا ۱۰۰٪ مطمئن شیم واقعاً ذخیره شده
   const verify = await sbGet("predictions", `phone=eq.${currentUser.phone}&match_id=eq.${matchId}`);
   if (!verify || !verify.length || verify[0].pick !== pick) {
     throw new Error("ثبت تایید نشد — لطفاً دوباره تلاش کنید");
   }
-
   renderMatches();
 } catch(e) {
   alert("⚠️ خطا در ثبت پیش‌بینی: " + e.message + "\nلطفاً دوباره روی گزینه بزنید.");
-  renderMatches(); // برگشت به وضعیت واقعی (بدون پیش‌بینی جدید)
+  renderMatches();
 }
 predictingNow = false;
       
