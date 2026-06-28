@@ -308,11 +308,12 @@
             <label>مرحله</label>
             <select id="add-stage">
               <option value="group">مرحله گروهی — ۳ امتیاز</option>
-              <option value="r32">یک‌شانزدهم — ۴ امتیاز</option>
-              <option value="r16">یک‌هشتم — ۵ امتیاز</option>
-              <option value="qf">یک‌چهارم — ۷ امتیاز</option>
-              <option value="sf">نیمه‌نهایی — ۸ امتیاز</option>
-              <option value="final">فینال — ۱۰ امتیاز</option>
+              <option value="r32">۱/۳۲ — ۴ امتیاز</option>
+              <option value="r16">۱/۱۶ — ۶ امتیاز</option>
+              <option value="qf">۱/۴ — ۸ امتیاز</option>
+              <option value="sf">نیمه‌نهایی — ۱۰ امتیاز</option>
+              <option value="third">رده‌بندی (تیم سوم) — ۱۱ امتیاز</option>
+              <option value="final">فینال — ۱۴ امتیاز</option>
             </select>
             <button class="btn btn-primary" onclick="addMatch()">➕ افزودن بازی</button>
           </div>
@@ -354,8 +355,10 @@
     // =============================================
     // Timestamp validation — همه timestamp‌ها از سرور میان
     // =============================================
-    const PTS_MAP = { group:3, r32:4, r16:5, qf:7, sf:8, final:10 };
-    const STAGE_LABEL = { group:"گروهی", r32:"۱/۱۶", r16:"۱/۸", qf:"۱/۴", sf:"نیمه‌نهایی", final:"فینال" };
+    const PTS_MAP = { group:3, r32:4, r16:6, qf:8, sf:10, third:11, final:14 };
+    const STAGE_LABEL = { group:"گروهی", r32:"۱/۳۲", r16:"۱/۱۶", qf:"۱/۴", sf:"نیمه‌نهایی", third:"رده‌بندی", final:"فینال" };
+    // مرحله‌های حذفی (همه چیز به جز گروهی) — در این مرحله‌ها «مساوی» وجود ندارد
+    const isKnockout = stage => stage !== "group";
 
     let currentUser = null;
     let allMatches = [];
@@ -590,13 +593,19 @@
           ${pick ? `<div class="my-pick-row my-pick-neutral" style="margin-top:6px">پیش‌بینی شما: ${rMap[pick]}</div>` : ""}`;
       } else {
         // دکمه‌های پیش‌بینی — با data-matchid برای validation
+        const ko = isKnockout(m.stage); // در مرحله‌های حذفی مساوی نداریم
         const b = v => `<button class="predict-btn${pick===v?" selected":""}" 
           data-matchid="${m.match_id}" data-pick="${v}" data-kickoff="${m.kickoff}"
           onclick="predict('${m.match_id}','${v}',${m.kickoff})">
           ${v==="team1" ? m.flag1+"<br>برد "+m.team1 : v==="draw" ? "🤝<br>مساوی" : m.flag2+"<br>برد "+m.team2}
         </button>`;
-        bottom = `<div class="predict-btns">${b("team1")}${b("draw")}${b("team2")}</div>
-          ${pick ? `<div class="my-pick-row my-pick-correct" style="margin-top:7px">✓ ثبت شد — تا قفل شدن می‌توانید تغییر دهید</div>` : ""}`;
+        const btnsHtml = ko ? (b("team1")+b("team2")) : (b("team1")+b("draw")+b("team2"));
+        const gridStyle = ko ? ' style="grid-template-columns:1fr 1fr"' : '';
+        const stalePick = ko && pick === "draw"; // پیش‌بینی «مساوی» قدیمی که در مرحله حذفی دیگر معتبر نیست
+        bottom = `<div class="predict-btns"${gridStyle}>${btnsHtml}</div>
+          ${stalePick
+            ? `<div class="my-pick-row my-pick-wrong" style="margin-top:7px">⚠️ پیش‌بینی قبلی شما (مساوی) دیگر معتبر نیست — یکی از دو تیم را انتخاب کنید</div>`
+            : pick ? `<div class="my-pick-row my-pick-correct" style="margin-top:7px">✓ ثبت شد — تا قفل شدن می‌توانید تغییر دهید</div>` : ""}`;
       }
 
       return `<div class="match-card" data-mid="${m.match_id}">
@@ -992,7 +1001,7 @@ try {
                   <select id="res-${m.match_id}">
                     <option value="">نتیجه بازی...</option>
                     <option value="team1">برد ${m.team1}</option>
-                    <option value="draw">مساوی</option>
+                    ${isKnockout(m.stage) ? "" : `<option value="draw">مساوی</option>`}
                     <option value="team2">برد ${m.team2}</option>
                   </select>
                   <input type="text" id="scr-${m.match_id}" placeholder="مثلاً 2-1" style="margin-bottom:0"/>
@@ -1000,6 +1009,7 @@ try {
                 <div style="display:flex;gap:8px;flex-wrap:wrap">
                   <button class="btn-sm btn-gold" onclick="setResult('${m.match_id}',${pts})">✓ ثبت نتیجه</button>
                   <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditTime('${m.match_id}')">🕐 ویرایش زمان</button>
+                  <button class="btn-sm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border)" onclick="toggleEditStage('${m.match_id}')">🏷 ویرایش مرحله</button>
                   <button class="btn-sm btn-danger" onclick="delMatch('${m.match_id}')">🗑 حذف</button>
                 </div>
                 <div id="edit-time-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
@@ -1009,6 +1019,19 @@ try {
                     <input type="time" id="edit-time-val-${m.match_id}" value="${editTime}" style="margin-bottom:0"/>
                   </div>
                   <button class="btn-sm btn-gold" onclick="saveEditTime('${m.match_id}')">✓ ذخیره</button>
+                </div>
+                <div id="edit-stage-${m.match_id}" style="display:none;margin-top:10px;padding:10px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+                  <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px">تغییر مرحله بازی</div>
+                  <select id="edit-stage-val-${m.match_id}" style="margin-bottom:8px">
+                    <option value="group"${m.stage==="group"?" selected":""}>گروهی — ۳ امتیاز</option>
+                    <option value="r32"${m.stage==="r32"?" selected":""}>۱/۳۲ — ۴ امتیاز</option>
+                    <option value="r16"${m.stage==="r16"?" selected":""}>۱/۱۶ — ۶ امتیاز</option>
+                    <option value="qf"${m.stage==="qf"?" selected":""}>۱/۴ — ۸ امتیاز</option>
+                    <option value="sf"${m.stage==="sf"?" selected":""}>نیمه‌نهایی — ۱۰ امتیاز</option>
+                    <option value="third"${m.stage==="third"?" selected":""}>رده‌بندی — ۱۱ امتیاز</option>
+                    <option value="final"${m.stage==="final"?" selected":""}>فینال — ۱۴ امتیاز</option>
+                  </select>
+                  <button class="btn-sm btn-gold" onclick="saveEditStage('${m.match_id}')">✓ ذخیره مرحله</button>
                 </div>
               </div>`;
           return `<div class="admin-match">
@@ -1096,6 +1119,28 @@ try {
         await sbPatch("matches",{ kickoff },`match_id=eq.${matchId}`);
         _cache.matches = null;
         alert("✅ زمان بروز شد");
+        loadAdminMatches();
+      } catch(e) { alert("خطا: "+e.message); }
+    }
+
+    // =============================================
+    // ویرایش مرحله (گروهی ↔ حذفی) + بروزرسانی امتیاز بازی
+    // امتیاز کاربران و نتایج ثبت‌شده دست‌نخورده می‌مانند
+    // =============================================
+    function toggleEditStage(matchId) {
+      const el = document.getElementById("edit-stage-"+matchId);
+      el.style.display = el.style.display==="none" ? "block" : "none";
+    }
+
+    async function saveEditStage(matchId) {
+      const stage = document.getElementById("edit-stage-val-"+matchId)?.value;
+      if (!stage) return alert("مرحله را انتخاب کنید");
+      const pts = PTS_MAP[stage] || 3;
+      if (!confirm(`مرحله این بازی به «${STAGE_LABEL[stage]}» با ${pts} امتیاز تغییر کند؟`)) return;
+      try {
+        await sbPatch("matches", { stage, pts }, `match_id=eq.${matchId}`);
+        _cache.matches = null;
+        alert("✅ مرحله بروز شد — این بازی حالا "+pts+" امتیازی است");
         loadAdminMatches();
       } catch(e) { alert("خطا: "+e.message); }
     }
